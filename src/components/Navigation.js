@@ -6,25 +6,25 @@ import {
     NavLink } from 'reactstrap';
 
 
-function RegionsNav(props){
-    //currently not using!!
-    let cr = props.currentRegion;
+// function RegionsNav(props){
+//     //currently not using!!
+//     let cr = props.currentRegion;
 
-    return (
-    <Navbar color="light" light>
-        <NavbarBrand href="/">Choose Region</NavbarBrand>
-        <Nav tabs>
-            <NavLink onClick={props.changeRegion} id="Kanto" disabled={cr==="Kanto"} >Kanto</NavLink>
-            <NavLink onClick={props.changeRegion} id="Johto" disabled={cr==="Johto"} >Johto</NavLink>
-            <NavLink onClick={props.changeRegion} id="Hoenn" disabled={cr==="Hoenn"} >Hoenn</NavLink>
-            <NavLink onClick={props.changeRegion} id="Sinnoh" disabled={cr==="Sinnoh"} >Sinnoh</NavLink>
-            <NavLink onClick={props.changeRegion} id="Unova" disabled={cr==="Unova"}>Unova</NavLink>
-            <NavLink onClick={props.changeRegion} id="Kalos" disabled={cr==="Kalos"}>Kalos</NavLink>
-            <NavLink onClick={props.changeRegion} id="Alola" disabled={cr==="Alola"}>Alola</NavLink>
-        </Nav>
-    </Navbar>
-    )
-}
+//     return (
+//     <Navbar color="light" light>
+//         <NavbarBrand href="/">Choose Region</NavbarBrand>
+//         <Nav tabs>
+//             <NavLink onClick={props.changeRegion} id="Kanto" disabled={cr==="Kanto"} >Kanto</NavLink>
+//             <NavLink onClick={props.changeRegion} id="Johto" disabled={cr==="Johto"} >Johto</NavLink>
+//             <NavLink onClick={props.changeRegion} id="Hoenn" disabled={cr==="Hoenn"} >Hoenn</NavLink>
+//             <NavLink onClick={props.changeRegion} id="Sinnoh" disabled={cr==="Sinnoh"} >Sinnoh</NavLink>
+//             <NavLink onClick={props.changeRegion} id="Unova" disabled={cr==="Unova"}>Unova</NavLink>
+//             <NavLink onClick={props.changeRegion} id="Kalos" disabled={cr==="Kalos"}>Kalos</NavLink>
+//             <NavLink onClick={props.changeRegion} id="Alola" disabled={cr==="Alola"}>Alola</NavLink>
+//         </Nav>
+//     </Navbar>
+//     )
+// }
 
 
 class Navigation extends Component {
@@ -34,16 +34,6 @@ class Navigation extends Component {
         // this.navClicked = this.navClicked.bind(this);
         // this.changeRegion = this.props.changeRegion.bind(this);
     }
-
-    // navClicked(event){
-    //     console.log("sort by:", event.target.id);
-    //     this.setState({
-    //         currentView: event.target.id,
-    //     });
-    // }
-
-    
-
 
     render () {
         let cv = this.props.currentView;

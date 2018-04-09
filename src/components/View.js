@@ -3,13 +3,13 @@ import Navigation from './Navigation';
 import ShowPokemon from './ShowPokemon';
 import ShowDetail from './ShowDetail';
 
-
+import { Container, Row, Col } from 'reactstrap';
 
 
 class View extends Component {
     constructor(props) {
       super(props);
-  
+
         // getinitialState
         this.state = {
             currentView: "regions",
@@ -23,6 +23,7 @@ class View extends Component {
         this.changeRegion = this.changeRegion.bind(this);
         this.getPokemon = this.getPokemon.bind(this);
         this.clickPokeName = this.clickPokeName.bind(this);
+
         // this.getPokemon = this.getPokemon.bind(this);
         // this.setState = this.setState.bind(this);
         // this.makeSearchObj = this.makeSearchObj.bind(this);
@@ -30,23 +31,25 @@ class View extends Component {
     }
 
     getPokemon(){
+
         // let searchObj = this.makeSearchObj();
 
         console.log("getPokemon", this.state.currentRegion);
         let url;
         if (this.state.currentView === "regions"){
-            console.log("url", `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`);
+            // console.log("url", `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`);
             //look in regional
             url = `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
         }else if (this.state.currentView === "a-z"){
             url = "https://bell-pokemon.firebaseio.com/allPokemon.json"
         }
-            
+        console.log("getPokemon:", url);
         fetch(url)
         .then(res => res.json())
         .then(
            (result) => {
-              console.log("result", result);
+              console.log("getPokemon:result", result);
+            //   console.log("getPokemon result", result);
             //   //update state
             //   //react way - make a copy of state and then update the state
             //   const updatedPokemon = { ...this.state.pokemon };
@@ -55,12 +58,25 @@ class View extends Component {
             //   result.showResult = false;
             //   result.calledAnother = false;
             // updatedPokemon[`poke-${timestamp}`] = result;
-    
+
             //   //set state
             //   //using object will focus on the state that has changed
-              this.setState({
-                 pokeLoaded: true,
-                 pokemon: result,
+
+            //aphabatize and add fbID
+              let newArray = Object.keys(result).map((key, index) => {
+                 result[key].fbid = key;
+                 return result[key];
+              });
+
+              newArray.sort(function(a, b) {
+                  var textA = a.pName;
+                  var textB = b.pName;
+                  return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+               });
+
+            this.setState({
+               pokeLoaded: true,
+               pokemon: newArray,
               });
            },
            // Note: it's important to handle errors here
@@ -83,7 +99,9 @@ class View extends Component {
         this.getPokemon();
      }
 
-    
+   //   componentDidUpdate(prevProps, prevSate){
+   //    console.log("DID UPDATE", prevProp, prevState);
+   //   }
 
     changeView(event){
         console.log("event", event.target.id);
@@ -93,14 +111,19 @@ class View extends Component {
     }
 
     changeRegion(event){
-        console.log("show region:", event.target.id);
-        this.setState({
-            currentRegion: event.target.id,
-            pokeLoaded: false,
-            pokemon:{},
-            error: null,
-        }, this.getPokemon());
+       console.log("changeRegion", event.target.id);
+       console.log("what is state:", this.state);
+
+       this.setState( {
+          currentRegion: event.target.id,
+          pokeLoaded: false,
+          pokemon: {},
+          error: null,
+       }, this.getPokemon);
+
     }
+
+
 
     makeSearchObj(){
         console.log("makeObj", this.state.currentRegion);
@@ -130,28 +153,37 @@ class View extends Component {
         fetch(url)
         .then(res => res.json())
         .then(data => {
+           console.log("the data of clickpokeName", data);
             //need to get data out of key?
-            let tmp = data;
-            console.log("clickPokeName", tmp, data.FullImageURL);
-            this.setState({ currentPokemon: data });
+            let key = Object.keys(data)[0];
+           console.log("clickPokeName", data[key].FullImageURL);
+           data[key].fbID = key;
+            this.setState({ currentPokemon: data[key] });
         })
         .catch(err => console.log(err));
     }
 
     render(){
-        console.log("calling render, here now, however new data is not...");
+        console.log("calling render, here now, however new data is not...", this.state);
         const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon} = this.state;
             return (
                 <div>
-                    <Navigation 
-                        currentView={currentView} 
-                        changeView={this.changeView} 
-                        currentRegion={currentRegion} 
+                    <Navigation
+                        currentView={currentView}
+                        changeView={this.changeView}
+                        currentRegion={currentRegion}
                         changeRegion={this.changeRegion} />
-                    <ShowDetail currentPokemon={currentPokemon} />
-                    {/*<ShowPokemon whichView={currentView} searchObj={searchObj}/>*/}
-                    <ShowPokemon pokemon={pokemon}  clickPokeName={this.clickPokeName} />
-
+                     <Container>
+                        <Row>
+                        <Col sm="3" style={{ overflow: 'scroll', borderColor: '#85144b', height: '500px'}}>
+                              {/*<ShowPokemon whichView={currentView} searchObj={searchObj}/>*/}
+                              <ShowPokemon pokemon={pokemon}  clickPokeName={this.clickPokeName} col-6 />
+                           </Col>
+                           <Col sm="9">
+                           <ShowDetail currentPokemon={currentPokemon} col-6 />
+                        </Col>
+                        </Row>
+                     </Container>
                 </div>
             );
     }

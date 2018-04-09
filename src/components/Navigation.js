@@ -31,8 +31,6 @@ class Navigation extends Component {
     constructor(props){
         super(props);
 
-        // this.navClicked = this.navClicked.bind(this);
-        // this.changeRegion = this.props.changeRegion.bind(this);
     }
 
     render () {
@@ -50,15 +48,15 @@ class Navigation extends Component {
                 </Nav>
                 {/* show the regions when needed */}
                 </Navbar>
-                {cv==="regions" ? <Nav tabs>
-                <NavLink onClick={this.props.changeRegion} id="Kanto" disabled={cr==="Kanto"} >Kanto</NavLink>
-                <NavLink onClick={this.props.changeRegion} id="Johto" disabled={cr==="Johto"} >Johto</NavLink>
-                <NavLink onClick={this.props.changeRegion} id="Hoenn" disabled={cr==="Hoenn"} >Hoenn</NavLink>
-                <NavLink onClick={this.props.changeRegion} id="Sinnoh" disabled={cr==="Sinnoh"} >Sinnoh</NavLink>
-                <NavLink onClick={this.props.changeRegion} id="Unova" disabled={cr==="Unova"}>Unova</NavLink>
-                <NavLink onClick={this.props.changeRegion} id="Kalos" disabled={cr==="Kalos"}>Kalos</NavLink>
-                <NavLink onClick={this.props.changeRegion} id="Alola" disabled={cr==="Alola"}>Alola</NavLink>
-            </Nav> : null}
+                  {cv==="regions" ? <Nav tabs>
+                  <NavLink onClick={this.props.changeRegion} id="Kanto" disabled={cr==="Kanto"} >Kanto</NavLink>
+                  <NavLink onClick={this.props.changeRegion} id="Johto" disabled={cr==="Johto"} >Johto</NavLink>
+                  <NavLink onClick={this.props.changeRegion} id="Hoenn" disabled={cr==="Hoenn"} >Hoenn</NavLink>
+                  <NavLink onClick={this.props.changeRegion} id="Sinnoh" disabled={cr==="Sinnoh"} >Sinnoh</NavLink>
+                  <NavLink onClick={this.props.changeRegion} id="Unova" disabled={cr==="Unova"}>Unova</NavLink>
+                  <NavLink onClick={this.props.changeRegion} id="Kalos" disabled={cr==="Kalos"}>Kalos</NavLink>
+                  <NavLink onClick={this.props.changeRegion} id="Alola" disabled={cr==="Alola"}>Alola</NavLink>
+               </Nav> : null}
             </div>
         );
     }

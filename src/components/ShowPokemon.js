@@ -34,14 +34,19 @@ class ShowPokemon extends Component {
       }
 
     render(){
-      console.log("ShowPokemon", this.props.pokemom);
-      return (
-         <div>
-         {Object.keys(this.props.pokemon).map(this.renderPokemon)}
-         </div>
-      );
-
-    }
-
+      //  if (this.props.pokeLoaded){
+         console.log("ShowPokemon", this.props.pokemom);
+         return (
+            <div>
+               {Object.keys(this.props.pokemon).map(this.renderPokemon)}
+            </div>
+         );
+      }
+      // else{
+         // return (
+            // <div>Loading</div>
+         // )
+      // }
+   // }
 }
 export default ShowPokemon;

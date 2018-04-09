@@ -34,7 +34,7 @@ class View extends Component {
 
         // let searchObj = this.makeSearchObj();
 
-        console.log("getPokemon", this.state.currentRegion);
+        console.log("getPokemon", this.state.currentView, this.state.currentRegion);
         let url;
         if (this.state.currentView === "regions"){
             // console.log("url", `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`);
@@ -43,26 +43,13 @@ class View extends Component {
         }else if (this.state.currentView === "a-z"){
             url = "https://bell-pokemon.firebaseio.com/allPokemon.json"
         }
-        console.log("getPokemon:", url);
         fetch(url)
         .then(res => res.json())
         .then(
            (result) => {
-              console.log("getPokemon:result", result);
-            //   console.log("getPokemon result", result);
-            //   //update state
-            //   //react way - make a copy of state and then update the state
-            //   const updatedPokemon = { ...this.state.pokemon };
-            //   //make unique key with timestamp
-            //    const timestamp = Date.now();
-            //   result.showResult = false;
-            //   result.calledAnother = false;
-            // updatedPokemon[`poke-${timestamp}`] = result;
-
-            //   //set state
-            //   //using object will focus on the state that has changed
-
-            //aphabatize and add fbID
+            //   if (this.state.currentView === "regions") {
+            //for regional
+               //aphabatize and add fbID
               let newArray = Object.keys(result).map((key, index) => {
                  result[key].fbid = key;
                  return result[key];
@@ -73,6 +60,8 @@ class View extends Component {
                   var textB = b.pName;
                   return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
                });
+
+               //need to write for a-z or all pokemon
 
             this.setState({
                pokeLoaded: true,
@@ -99,20 +88,19 @@ class View extends Component {
         this.getPokemon();
      }
 
-   //   componentDidUpdate(prevProps, prevSate){
-   //    console.log("DID UPDATE", prevProp, prevState);
-   //   }
-
     changeView(event){
-        console.log("event", event.target.id);
+       console.log("changeView event", event.target.id);
+
         this.setState({
-          currentView: event.target.id
-        });
+         currentView: event.target.id,
+         pokeLoaded: false,
+         pokemon: {},
+         error: null,
+        }, this.getPokemon);
     }
 
     changeRegion(event){
        console.log("changeRegion", event.target.id);
-       console.log("what is state:", this.state);
 
        this.setState( {
           currentRegion: event.target.id,
@@ -172,7 +160,8 @@ class View extends Component {
                         currentView={currentView}
                         changeView={this.changeView}
                         currentRegion={currentRegion}
-                        changeRegion={this.changeRegion} />
+                        changeRegion={this.changeRegion}
+                        pokeLoaded={this.pokeLoaded} />
                      <Container>
                         <Row>
                         <Col sm="3" style={{ overflow: 'scroll', borderColor: '#85144b', height: '500px'}}>

@@ -5,8 +5,8 @@ import React from 'react';
 function Header(props){
     return (
         <header>
-            <h1>Poke Binder</h1>
-            <p>Login</p>
+            {/* <h1>Bell's Poke Binder</h1> */}
+            {/* <p>Login</p> */}
         </header>
     );
 }

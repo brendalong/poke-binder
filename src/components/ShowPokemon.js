@@ -15,38 +15,62 @@ class ShowPokemon extends Component {
         //     error: null,
         //     currentRegion: searchObj.currentRegion
         // }
+
+        this.state ={
+            activeElement: null,
+        }
     }
 
     componentDidMount() {
         //lifecycle hook
-        console.log("showpokemon componentDidMount");
-        // this.getPokemon();
-
+        //console.log("showpokemon componentDidMount");
+        this.setState({
+            activeElement: null,
+        });
     }
 
-     renderPokemon(key) {
+    // when clicked, turn bkg another color for active one.
+    renderPokemon(key) {
         const poke = this.props.pokemon[key];
+        if (this.props.currentView === "regions"){
         return (
           <div className="poke-box" key={key}>
-            <p onClick={() => this.props.clickPokeName(poke.pName)}>{firstLetterCase(poke.pName)}</p>
+            <p onClick={((e) => {
+                {(this.state.activeElement) ?
+                    this.state.activeElement.classList.remove("activePokemon")
+                    : null }
+                this.setState({
+                    activeElement: e.target,
+                })
+                e.target.classList.add("activePokemon");
+                this.props.clickPokeName(poke.pName)})
+                }>{firstLetterCase(poke.pName)}</p>
           </div>
         )
-      }
+        }else if (this.props.currentView === "a-z"){
+            return(
+            <div className="poke-box" key={key}>
+            <p onClick={((e) => {
+                {(this.state.activeElement) ?
+                    this.state.activeElement.classList.remove("activePokemon")
+                    : null }
+                this.setState({
+                    activeElement: e.target,
+                })
+                e.target.classList.add("activePokemon");
+                this.props.clickPokeName(poke.slug)})
+                }>{poke.name}</p>
+            </div>
+            )
+        }
+    }
 
     render(){
-      //  if (this.props.pokeLoaded){
-         console.log("ShowPokemon", this.props.pokemom);
          return (
             <div>
                {Object.keys(this.props.pokemon).map(this.renderPokemon)}
             </div>
          );
-      }
-      // else{
-         // return (
-            // <div>Loading</div>
-         // )
-      // }
-   // }
+    }  
 }
 export default ShowPokemon;

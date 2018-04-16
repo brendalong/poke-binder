@@ -3,7 +3,9 @@ import {
     Navbar,
     NavbarBrand,
     Nav,
-    NavLink } from 'reactstrap';
+    NavLink,
+    NavItem,
+    Button } from 'reactstrap';
 
 
 // function RegionsNav(props){
@@ -38,25 +40,46 @@ class Navigation extends Component {
         let cr = this.props.currentRegion;
         return (
             <div>
-            <Navbar color="light" light>
-                <NavbarBrand href="/">Show Me Pokemon</NavbarBrand>
-                <Nav tabs>
+            <Navbar >
+                <h1 className="brand">Poke Binder</h1>
+                <Nav>
+                    <NavItem>
                     <NavLink onClick={this.props.changeView} id="regions" disabled={cv==="regions"} >Regions</NavLink>
-                    <NavLink onClick={this.props.changeView} id="types" disabled={cv==="types"}>Types</NavLink>
+                    </NavItem>
+                    <NavItem>
                     <NavLink onClick={this.props.changeView} id="a-z" disabled={cv==="a-z"}>A-Z</NavLink>
+                    </NavItem>
+                    <NavItem>
                     <NavLink onClick={this.props.changeView} id="mine" disabled={cv==="mine"}>Mine</NavLink>
+                    </NavItem>
+                    
                 </Nav>
                 {/* show the regions when needed */}
                 </Navbar>
-                  {cv==="regions" ? <Nav tabs>
-                  <NavLink onClick={this.props.changeRegion} id="Kanto" disabled={cr==="Kanto"} >Kanto</NavLink>
+
+                  {cv==="regions" ? <ul className="nav justify-content-end subnav">
+                  <li className="nav-item " >
+                  <NavLink className="nav-link" onClick={this.props.changeRegion} id="Kanto" disabled={cr==="Kanto"} >Kanto</NavLink>
+                  </li>
+                  <li className="nav-item">
                   <NavLink onClick={this.props.changeRegion} id="Johto" disabled={cr==="Johto"} >Johto</NavLink>
+                  </li>
+                  <li className="nav-item">
                   <NavLink onClick={this.props.changeRegion} id="Hoenn" disabled={cr==="Hoenn"} >Hoenn</NavLink>
+                  </li>
+                  <li className="nav-item">
                   <NavLink onClick={this.props.changeRegion} id="Sinnoh" disabled={cr==="Sinnoh"} >Sinnoh</NavLink>
+                  </li>
+                  <li className="nav-item">
                   <NavLink onClick={this.props.changeRegion} id="Unova" disabled={cr==="Unova"}>Unova</NavLink>
+                  </li>
+                  <li className="nav-item">
                   <NavLink onClick={this.props.changeRegion} id="Kalos" disabled={cr==="Kalos"}>Kalos</NavLink>
+                  </li>
+                  <li className="nav-item">
                   <NavLink onClick={this.props.changeRegion} id="Alola" disabled={cr==="Alola"}>Alola</NavLink>
-               </Nav> : null}
+                  </li>
+               </ul> : null}
             </div>
         );
     }

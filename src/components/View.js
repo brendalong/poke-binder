@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import Navigation from './Navigation';
 import ShowPokemon from './ShowPokemon';
 import ShowDetail from './ShowDetail';
+import ShowCards from './ShowCards';
+import ShowCardDetail from './ShowCardDetail';
 
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, CardDeck } from 'reactstrap';
 
 
 class View extends Component {
@@ -17,23 +19,27 @@ class View extends Component {
             pokeLoaded: false,
             pokemon: {},
             currentPokemon: {},
+            currentCards: {},
+            currentCard: null,
+            cardIsLoaded: true,
+            cardError: null,
+            detailShowCritter: true,
         };
 
         this.changeView = this.changeView.bind(this);
         this.changeRegion = this.changeRegion.bind(this);
         this.getPokemon = this.getPokemon.bind(this);
         this.clickPokeName = this.clickPokeName.bind(this);
+        this.getCards = this.getCards.bind(this);
+        this.clickCard = this.clickCard.bind(this);
 
-        // this.getPokemon = this.getPokemon.bind(this);
-        // this.setState = this.setState.bind(this);
+        let activeName;
+
         // this.makeSearchObj = this.makeSearchObj.bind(this);
         // this.updateRegionState = this.updateRegionState.bind(this);
     }
 
     getPokemon(){
-
-        // let searchObj = this.makeSearchObj();
-
         console.log("getPokemon", this.state.currentView, this.state.currentRegion);
         let url;
         if (this.state.currentView === "regions"){
@@ -48,19 +54,32 @@ class View extends Component {
         .then(
            (result) => {
             //   if (this.state.currentView === "regions") {
-            //for regional
+                //for regional
                //aphabatize and add fbID
-              let newArray = Object.keys(result).map((key, index) => {
-                 result[key].fbid = key;
-                 return result[key];
-              });
+               let newArray;
+               if (this.state.currentView === "regions"){
+                    newArray = Object.keys(result).map((key, index) => {
+                        result[key].fbid = key;
+                        return result[key];
+                    });
 
-              newArray.sort(function(a, b) {
-                  var textA = a.pName;
-                  var textB = b.pName;
-                  return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-               });
-
+                    newArray.sort(function(a, b) {
+                        var textA = a.pName;
+                        var textB = b.pName;
+                        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                    });
+                }else if (this.state.currentView === "a-z"){
+                    newArray = Object.keys(result).map((key, index) => {
+                        result[key].fbid = key;
+                        return result[key];
+                    });
+                    newArray.sort(function(a, b) {
+                        var textA = a.name;
+                        var textB = b.name;
+                        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                    });
+                    
+                }
                //need to write for a-z or all pokemon
 
             this.setState({
@@ -78,9 +97,8 @@ class View extends Component {
                     error: error
                 });
             }
-        )
-     }
-
+        );
+    }
 
     componentDidMount() {
         //lifecycle hook
@@ -122,19 +140,29 @@ class View extends Component {
         return searchObj;
     }
 
-    // clickPokeName(whichOne){
-    //     console.log(whichOne);
-    //     let url = `https://bell-pokemon.firebaseio.com/allPokemon.json?orderBy="slug"&equalTo="${whichOne}"`;
-    //     fetch(url)
-    //     .then(res => res.json())
-    //     .then(result => {
-    //           console.log("clickPokeName result", result);
-    //           this.setState({
-    //               currentPokemon: result
-    //           })
-    //           .catch(err => console.log("error with getting currentPokemon data"));
-    //     })
-    // }
+    getCards(){
+        console.log("getCards", this.state.currentPokemon);
+        let url = `https://api.pokemontcg.io/v1/cards?name=${this.state.currentPokemon.name}`;
+        fetch(url)
+        .then(res => res.json())
+        .then(
+            (result) => {
+                console.log(result);
+
+                this.setState({
+                    currentCards: result.cards,
+                });
+            },
+        (error) => {
+            console.log("error", error);
+             this.setState({
+                 cardIsLoaded: true,
+                 cardError: error
+             });
+        });
+    }
+    
+    
 
     clickPokeName(whichOne){
         let url = `https://bell-pokemon.firebaseio.com/allPokemon.json?orderBy="slug"&equalTo="${whichOne}"`;
@@ -142,39 +170,70 @@ class View extends Component {
         .then(res => res.json())
         .then(data => {
            console.log("the data of clickpokeName", data);
-            //need to get data out of key?
+            //need to get data out of key
+            
             let key = Object.keys(data)[0];
-           console.log("clickPokeName", data[key].FullImageURL);
-           data[key].fbID = key;
-            this.setState({ currentPokemon: data[key] });
+            data[key].fbID = key;
+            this.setState({ 
+                currentPokemon: data[key],
+                detailShowCritter: true,
+                currentCard: null,
+            }, this.getCards);
         })
         .catch(err => console.log(err));
     }
 
+    clickCard(whichOne){
+        console.log("whichOne", whichOne);
+        this.setState({
+            detailShowCritter: false,
+            currentCard: whichOne,
+        });
+    }
+
     render(){
-        console.log("calling render, here now, however new data is not...", this.state);
-        const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon} = this.state;
-            return (
-                <div>
-                    <Navigation
-                        currentView={currentView}
-                        changeView={this.changeView}
-                        currentRegion={currentRegion}
-                        changeRegion={this.changeRegion}
-                        pokeLoaded={this.pokeLoaded} />
-                     <Container>
-                        <Row>
-                        <Col sm="3" style={{ overflow: 'scroll', borderColor: '#85144b', height: '500px'}}>
-                              {/*<ShowPokemon whichView={currentView} searchObj={searchObj}/>*/}
-                              <ShowPokemon pokemon={pokemon}  clickPokeName={this.clickPokeName} col-6 />
-                           </Col>
-                           <Col sm="9">
-                           <ShowDetail currentPokemon={currentPokemon} col-6 />
-                        </Col>
-                        </Row>
-                     </Container>
-                </div>
-            );
+        const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter} = this.state;
+        let showDetail;
+        let showCards;
+
+        if (detailShowCritter){
+            if (currentPokemon.name){
+                showDetail = <ShowDetail currentPokemon={currentPokemon} col-6 />;
+            }
+        } else {
+            if (currentCard){
+                showDetail = <ShowCardDetail img={currentCard} currentPokemon={currentPokemon} />
+            }
+        }
+
+        if (currentCards.length > 0){
+            showCards = <ShowCards cards={currentCards} clickCard={this.clickCard} />
+        }
+        console.log("got here", currentView);
+        return (
+            <div >
+                <Navigation 
+                    currentView={currentView}
+                    changeView={this.changeView}
+                    currentRegion={currentRegion}
+                    changeRegion={this.changeRegion}
+                    pokeLoaded={this.pokeLoaded} />
+                    <Container fluid>
+                    <Row>
+                    <Col xs="2 poke-list">
+                        {/*<ShowPokemon whichView={currentView} searchObj={searchObj}/>*/}
+                        <ShowPokemon pokemon={pokemon}  currentView={currentView} clickPokeName={this.clickPokeName} />
+                    </Col>
+                    <Col xs="6 poke-details">
+                        {showDetail}
+                    </Col>
+                    <Col xs="4 poke-cards">
+                        {showCards}
+                    </Col>
+                    </Row>
+                    </Container>
+            </div>
+        );
     }
 }
 

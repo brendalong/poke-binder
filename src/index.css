@@ -1,5 +1,91 @@
-body {
+body, html {
   margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+  overflow: hidden;
+  height:100%;
 }
+
+.navbar {
+  background-color:#001f3f;
+}
+
+.brand {
+  color: #ffffff;
+}
+
+.nav-item {
+  color: #D11F76;
+}
+
+.subnav {
+  background-color: #39cccc;
+}
+
+.activePokemon {
+  background-color: #ffffff;
+}
+
+a.nav-link.disabled {
+  color: #111111;
+}
+
+a.nav-link.disabled{
+  color: #b10dc9;
+}
+
+.poke-list {
+  background-color: #0074d9;
+  text-align: center;
+  height:92vh;
+  position: relative;
+  /* top: 0px; */
+  /* bottom: 0; */
+  left: 0;
+  overflow-y: scroll; 
+}
+
+.poke-cards {
+  background-color: #7fdbff;
+  text-align: center;
+  height:92vh;
+  position: relative;
+  /* top: 0px; */
+  /* bottom: 0; */
+  left: 0;
+  overflow-y: scroll; 
+}
+
+.poke-details {
+  background-color: #7fdbff;
+  text-align: center;
+  height:92vh;
+  position: relative;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  overflow-y: scroll; 
+}
+
+.poke-details .card{
+  background-color: #7fdbff;
+  border: 0px solid rgba(0,0,0,.125);
+}
+
+.cardDetail {
+  width: 80%;
+}
+
+/* .poke-list,
+.poke-cards,
+.poke-details {
+  overflow: auto;
+  height: auto;
+  padding: .5rem;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+} */
+/*Entirely optional – just wanted to remove the scrollbar on WebKit browsers as I find them ugly*/
+/* .Left::-webkit-scrollbar,
+.Middle::-webkit-scrollbar,
+.Right::-webkit-scrollbar {
+  display: none;
+} */

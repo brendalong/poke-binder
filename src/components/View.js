@@ -78,7 +78,7 @@ class View extends Component {
                         var textB = b.name;
                         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
                     });
-                    
+
                 }
                //need to write for a-z or all pokemon
 
@@ -161,8 +161,8 @@ class View extends Component {
              });
         });
     }
-    
-    
+
+
 
     clickPokeName(whichOne){
         let url = `https://bell-pokemon.firebaseio.com/allPokemon.json?orderBy="slug"&equalTo="${whichOne}"`;
@@ -171,10 +171,10 @@ class View extends Component {
         .then(data => {
            console.log("the data of clickpokeName", data);
             //need to get data out of key
-            
+
             let key = Object.keys(data)[0];
             data[key].fbID = key;
-            this.setState({ 
+            this.setState({
                 currentPokemon: data[key],
                 detailShowCritter: true,
                 currentCard: null,
@@ -212,7 +212,7 @@ class View extends Component {
         console.log("got here", currentView);
         return (
             <div >
-                <Navigation 
+                <Navigation
                     currentView={currentView}
                     changeView={this.changeView}
                     currentRegion={currentRegion}

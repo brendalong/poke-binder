@@ -4,6 +4,7 @@ import ShowPokemon from './ShowPokemon';
 import ShowDetail from './ShowDetail';
 import ShowCards from './ShowCards';
 import ShowCardDetail from './ShowCardDetail';
+import { rebase } from '../constants';
 
 import { Container, Row, Col, CardDeck } from 'reactstrap';
 
@@ -24,6 +25,8 @@ class View extends Component {
             cardIsLoaded: true,
             cardError: null,
             detailShowCritter: true,
+            currentNotes:{},
+            notesLoaded: false,
         };
 
         this.changeView = this.changeView.bind(this);
@@ -32,6 +35,7 @@ class View extends Component {
         this.clickPokeName = this.clickPokeName.bind(this);
         this.getCards = this.getCards.bind(this);
         this.clickCard = this.clickCard.bind(this);
+        this.saveNotes = this.saveNotes.bind(this);
 
         let activeName;
 
@@ -80,7 +84,7 @@ class View extends Component {
                     });
 
                 }
-               //need to write for a-z or all pokemon
+               //need to write for mine
 
             this.setState({
                pokeLoaded: true,
@@ -100,11 +104,36 @@ class View extends Component {
         );
     }
 
+    componentWillMount() {
+    // this runs right before the <App> is rendered
+        this.ref = rebase.syncState(`/mine`, {
+        context: this,
+        state: 'currentNotes'
+        });
+    }
+
+    componentWillUnmount() {
+        rebase.removeBinding(this.ref);
+    }
+
     componentDidMount() {
         //lifecycle hook
         console.log("componentDidMount");
         this.getPokemon();
-     }
+        this.dataHandler();
+    }
+
+    dataHandler(){
+        const userRef = rebase.initializedApp.database().ref('mine');
+        console.log("view dataHandler", userRef);
+
+        // query the firebase once for the user data
+        userRef.once('value', (snapshot) => {
+            const data = snapshot.val() || {};
+            //snapshot - how does it look right now.
+            console.log("data", data);
+        });
+    }
 
     changeView(event){
        console.log("changeView event", event.target.id);
@@ -140,6 +169,8 @@ class View extends Component {
         return searchObj;
     }
 
+
+
     getCards(){
         console.log("getCards", this.state.currentPokemon);
         let url = `https://api.pokemontcg.io/v1/cards?name=${this.state.currentPokemon.name}`;
@@ -147,7 +178,7 @@ class View extends Component {
         .then(res => res.json())
         .then(
             (result) => {
-                console.log(result);
+                // console.log(result);
 
                 this.setState({
                     currentCards: result.cards,
@@ -162,7 +193,23 @@ class View extends Component {
         });
     }
 
+    clickCard(obj){
+        console.log("whichOne", obj);
+        //call to get card by id 
+        //https://api.pokemontcg.io/v1/cards?id=xy12-18
 
+        this.setState({
+            detailShowCritter: false,
+            currentCard: obj,
+            currentNotes: {},
+            notesLoaded: false,
+        });
+    }
+
+    saveNotes(obj){
+        console.log("saveNotes obj", obj);
+
+    }
 
     clickPokeName(whichOne){
         let url = `https://bell-pokemon.firebaseio.com/allPokemon.json?orderBy="slug"&equalTo="${whichOne}"`;
@@ -183,14 +230,6 @@ class View extends Component {
         .catch(err => console.log(err));
     }
 
-    clickCard(whichOne){
-        console.log("whichOne", whichOne);
-        this.setState({
-            detailShowCritter: false,
-            currentCard: whichOne,
-        });
-    }
-
     render(){
         const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter} = this.state;
         let showDetail;
@@ -209,7 +248,6 @@ class View extends Component {
         if (currentCards.length > 0){
             showCards = <ShowCards cards={currentCards} clickCard={this.clickCard} />
         }
-        console.log("got here", currentView);
         return (
             <div >
                 <Navigation

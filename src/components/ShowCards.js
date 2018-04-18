@@ -22,7 +22,9 @@ class ShowCards extends Component {
                 ...this.props.cards[key],
                 [e.target.name]: e.target.value,
                 oneOfMine: true,
+                currentPokemon: this.props.currentPokemon.slug,
             }
+            console.log("new card", newCard);
             this.props.addCard(newCard);
         }else{
            //need key of myCard
@@ -89,7 +91,7 @@ class ShowCards extends Component {
                     <div>
                         <textarea rows='1' type="text"  value={card.notes || ""} name="notes" placeholder='notes' onChange={(e) => this.handleChange(e, key)}/>
                     </div>
-                    : null}
+                    : <div></div>}
                 </div>
             </div>
             </div>

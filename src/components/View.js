@@ -281,7 +281,11 @@ class View extends Component {
         }
 
         if (currentCards.length > 0){
-            showCards = <ShowCards cards={currentCards} clickCard={this.clickCard} updateMyCards={this.updateMyCards} myCards={myCards} addCard={this.addCard} />
+            showCards = <ShowCards cards={currentCards} 
+            clickCard={this.clickCard} 
+            updateMyCards={this.updateMyCards} 
+            myCards={myCards} 
+            addCard={this.addCard} />
         }
         return (
             <div >

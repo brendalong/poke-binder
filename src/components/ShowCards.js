@@ -43,8 +43,8 @@ class ShowCards extends Component {
         this.props.cards.forEach((element) => {
             if (this.props.myCards[key].id === element.id){
                 element.oneOfMine = this.props.myCards[key].oneOfMine;
-                element.notes = this.props.myCards[key].notes;
-                element.status = this.props.myCards[key].status;
+                element.notes = this.props.myCards[key].notes || null;
+                element.status = this.props.myCards[key].status || "caught";
                 console.log("got one", element);
             }
         });

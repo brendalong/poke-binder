@@ -143,6 +143,14 @@ class View extends Component {
          pokeLoaded: false,
          pokemon: {},
          error: null,
+            currentPokemon: {},
+            currentCards: {},
+            currentCard: null,
+            cardIsLoaded: false,
+            cardError: null,
+            detailShowCritter: true,
+            currentNotes:{},
+            notesLoaded: false,
         }, this.getPokemon);
     }
 
@@ -154,6 +162,14 @@ class View extends Component {
           pokeLoaded: false,
           pokemon: {},
           error: null,
+            currentPokemon: {},
+            currentCards: {},
+            currentCard: null,
+            cardIsLoaded: false,
+            cardError: null,
+            detailShowCritter: true,
+            currentNotes:{},
+            notesLoaded: false,
        }, this.getPokemon);
 
     }

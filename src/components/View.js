@@ -36,7 +36,6 @@ class View extends Component {
         this.clickPokeName = this.clickPokeName.bind(this);
         this.getCards = this.getCards.bind(this);
         this.clickCard = this.clickCard.bind(this);
-        this.saveNotes = this.saveNotes.bind(this);
         this.updateMyCards = this.updateMyCards.bind(this);
         this.addCard = this.addCard.bind(this);
 
@@ -154,6 +153,7 @@ class View extends Component {
             detailShowCritter: true,
             currentNotes:{},
             notesLoaded: false,
+            myCards: {},
         }, this.getPokemon);
     }
 
@@ -173,6 +173,7 @@ class View extends Component {
             detailShowCritter: true,
             currentNotes:{},
             notesLoaded: false,
+            myCards: {},
        }, this.getPokemon);
 
     }
@@ -225,11 +226,6 @@ class View extends Component {
         });
     }
 
-    saveNotes(obj){
-        console.log("saveNotes obj", obj);
-
-    }
-
     addCard(card) {
         // update our state
         const myCards = {...this.state.myCards};
@@ -276,16 +272,16 @@ class View extends Component {
             }
         } else {
             if (currentCard){
-                showDetail = <ShowCardDetail img={currentCard} currentPokemon={currentPokemon} />
+                showDetail = <ShowCardDetail img={currentCard} currentPokemon={currentPokemon} col-6/>
             }
         }
 
         if (currentCards.length > 0){
             showCards = <ShowCards cards={currentCards} 
-            clickCard={this.clickCard} 
-            updateMyCards={this.updateMyCards} 
-            myCards={myCards} 
-            addCard={this.addCard} />
+                        clickCard={this.clickCard} 
+                        updateMyCards={this.updateMyCards} 
+                        myCards={myCards} 
+                        addCard={this.addCard} />
         }
         return (
             <div >
@@ -295,20 +291,20 @@ class View extends Component {
                     currentRegion={currentRegion}
                     changeRegion={this.changeRegion}
                     pokeLoaded={this.pokeLoaded} />
-                    <Container fluid>
-                    <Row>
-                    <Col xs="2 poke-list">
+                    <div className="container-fluid">
+                        <div class="row">
+                    <div class="col-2 poke-list">
                         {/*<ShowPokemon whichView={currentView} searchObj={searchObj}/>*/}
                         <ShowPokemon pokemon={pokemon}  currentView={currentView} clickPokeName={this.clickPokeName} />
-                    </Col>
-                    <Col xs="6 poke-details">
+                    </div>
+                    <div class="col-6 poke-details">
                         {showDetail}
-                    </Col>
-                    <Col xs="4 poke-cards">
+                    </div>
+                    <div class="col-4 poke-cards">
                         {showCards}
-                    </Col>
-                    </Row>
-                    </Container>
+                    </div>
+                        </div>
+                    </div>
             </div>
         );
     }

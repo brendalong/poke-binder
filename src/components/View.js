@@ -27,6 +27,7 @@ class View extends Component {
             detailShowCritter: true,
             currentNotes:{},
             notesLoaded: false,
+            myCards: {},
         };
 
         this.changeView = this.changeView.bind(this);
@@ -36,6 +37,8 @@ class View extends Component {
         this.getCards = this.getCards.bind(this);
         this.clickCard = this.clickCard.bind(this);
         this.saveNotes = this.saveNotes.bind(this);
+        this.updateMyCards = this.updateMyCards.bind(this);
+        this.addCard = this.addCard.bind(this);
 
         let activeName;
 
@@ -108,7 +111,7 @@ class View extends Component {
     // this runs right before the <App> is rendered
         this.ref = rebase.syncState(`/mine`, {
         context: this,
-        state: 'currentNotes'
+        state: 'myCards'
         });
     }
 
@@ -227,6 +230,22 @@ class View extends Component {
 
     }
 
+    addCard(card) {
+        // update our state
+        const myCards = {...this.state.myCards};
+        // add in our new fish
+        const timestamp = Date.now();
+        myCards[`card-${timestamp}`] = card;
+        // set state
+        this.setState({ myCards });
+      }
+
+    updateMyCards = (key, updatedCard) => {
+        const myCards = {...this.state.myCards};
+        myCards[key] = updatedCard;
+        this.setState({ myCards });
+      };
+
     clickPokeName(whichOne){
         let url = `https://bell-pokemon.firebaseio.com/allPokemon.json?orderBy="slug"&equalTo="${whichOne}"`;
         fetch(url)
@@ -247,7 +266,7 @@ class View extends Component {
     }
 
     render(){
-        const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter} = this.state;
+        const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter, myCards} = this.state;
         let showDetail;
         let showCards;
 
@@ -262,7 +281,7 @@ class View extends Component {
         }
 
         if (currentCards.length > 0){
-            showCards = <ShowCards cards={currentCards} clickCard={this.clickCard} />
+            showCards = <ShowCards cards={currentCards} clickCard={this.clickCard} updateMyCards={this.updateMyCards} myCards={myCards} addCard={this.addCard} />
         }
         return (
             <div >

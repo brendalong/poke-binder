@@ -69,9 +69,12 @@ class ShowCards extends Component {
         //console.log("render cards", key, card.imageUrl);
         // card.status = 'wild';
         console.log("card status", this.props.cards[key], card.status);
+        
         if (!card.status){
             card.status = 'wild';
         }
+       
+        
         return (
             <div className="row" key={key}>
             <div className="card mb-4 box-shadow bg-light border-info" >
@@ -84,9 +87,12 @@ class ShowCards extends Component {
                         <option value="want">Want</option>
                         <option value="wild">Wild</option>
                     </select>
+
+                    {card.oneOfMine ? 
                     <div>
                         <textarea rows='1' type="text" className="form-control" id="notes" placeholder='notes' onChange={(e) => this.handleChange(e, key)}/>
                     </div>
+                    : null}
                 </div>
             </div>
             </div>

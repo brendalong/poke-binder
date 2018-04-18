@@ -90,7 +90,7 @@ class ShowCards extends Component {
 
                     {card.oneOfMine ? 
                     <div>
-                        <textarea rows='1' type="text" className="form-control" id="notes" placeholder='notes' onChange={(e) => this.handleChange(e, key)}/>
+                        <textarea rows='1' type="text" className="form-control" name="notes" placeholder='notes' onChange={(e) => this.handleChange(e, key)}/>
                     </div>
                     : null}
                 </div>

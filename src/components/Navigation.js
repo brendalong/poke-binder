@@ -35,6 +35,8 @@ class Navigation extends Component {
 
     }
 
+
+
     render () {
         let cv = this.props.currentView;
         let cr = this.props.currentRegion;
@@ -52,7 +54,7 @@ class Navigation extends Component {
                     <NavItem>
                     <NavLink onClick={this.props.changeView} id="mine" disabled={cv==="mine"}>Mine</NavLink>
                     </NavItem>
-                    
+
                 </Nav>
                 {/* show the regions when needed */}
                 </Navbar>

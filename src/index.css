@@ -40,7 +40,7 @@ a.nav-link.disabled{
   /* top: 0px; */
   /* bottom: 0; */
   left: 0;
-  overflow-y: scroll; 
+  overflow-y: scroll;
 }
 
 .poke-cards {
@@ -51,7 +51,7 @@ a.nav-link.disabled{
   /* top: 0px; */
   /* bottom: 0; */
   left: 0;
-  overflow-y: scroll; 
+  overflow-y: scroll;
 }
 
 .poke-details {
@@ -62,7 +62,7 @@ a.nav-link.disabled{
   top: 0px;
   bottom: 0;
   left: 0;
-  overflow-y: scroll; 
+  overflow-y: scroll;
 }
 
 .poke-details .card{

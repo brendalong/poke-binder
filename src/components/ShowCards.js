@@ -4,21 +4,19 @@ import React, { Component } from 'react';
 class ShowCards extends Component {
     constructor(props) {
         super(props);
-        console.log("card props", this.props.cards);
         this.renderCards = this.renderCards.bind(this);
 
         this.handleChange = this.handleChange.bind(this);
         this.compareMyCards = this.compareMyCards.bind(this);
         this.objMap = this.objMap.bind(this);
-       
-       
+
+
     }
 
     handleChange(e, key) {
         //do we add the card or update
         // oneOfMine === true
-        console.log("my cards", this.props.myCards);
-        console.log(e, key);
+
         if(this.props.cards[key].oneOfMine !== true){
             const newCard = {
                 ...this.props.cards[key],
@@ -27,15 +25,15 @@ class ShowCards extends Component {
             }
             this.props.addCard(newCard);
         }else{
-            const myCard = this.props.cards[key];
-            // take a copy of that card and update it with the new data
-            //look at my cards
+           //need key of myCard
+           const myCard = this.props.myCards[this.props.cards[key].mycardid];
+           // take a copy of that card and update it with the new data
             const updatedCard = {
-            ...this.props.myCards,
+            ...this.props.myCard,
             [e.target.name]: e.target.value,
-            
+
             }
-            this.props.updateMyCards(key, updatedCard);
+           this.props.updateMyCards(this.props.cards[key].mycardid, updatedCard);
         }
       }
 
@@ -45,7 +43,7 @@ class ShowCards extends Component {
                 element.oneOfMine = this.props.myCards[key].oneOfMine;
                 element.notes = this.props.myCards[key].notes || null;
                 element.status = this.props.myCards[key].status || "caught";
-                console.log("got one", element);
+                element.mycardid = key;
             }
         });
       }
@@ -54,12 +52,12 @@ class ShowCards extends Component {
         Object.keys(this.props.myCards).map((this.objMap))
       }
 
-
+   // componentWillMount(){
+   //    this.compareMyCards();
+   // }
     componentDidMount() {
         //lifecycle hook
-        console.log("showCards componentDidMount");
-        console.log("my cards", this.props.myCards);
-        console.log("the cards", this.props.cards);
+
         // this.compareMyCards();
         //cycle through mine and this.props.cards and find matches, tag this.props.cards with property of oneOfMine
     }
@@ -68,15 +66,14 @@ class ShowCards extends Component {
         const card = this.props.cards[key];
         //console.log("render cards", key, card.imageUrl);
         // card.status = 'wild';
-        console.log("card status", this.props.cards[key], card.status);
-        
+      //   console.log("card status", this.props.cards[key], card.status);
+
         if (!card.status){
             card.status = 'wild';
         }
-       
-        
+
         return (
-            <div className="row" key={key}>
+           <div className="row" key={key} mycardid={card.mycardid}>
             <div className="card mb-4 box-shadow bg-light border-info" >
                 <img className='card-img-top' src={card.imageUrl} alt={card.name} onClick={(e) => {this.props.clickCard(card)}}/>
                 {/*imageUrlHiRes */}
@@ -88,9 +85,9 @@ class ShowCards extends Component {
                         <option value="wild">Wild</option>
                     </select>
 
-                    {card.oneOfMine ? 
+                    {card.oneOfMine ?
                     <div>
-                        <textarea rows='1' type="text" className="form-control" name="notes" placeholder='notes' onChange={(e) => this.handleChange(e, key)}/>
+                        <textarea rows='1' type="text"  value={card.notes || ""} name="notes" placeholder='notes' onChange={(e) => this.handleChange(e, key)}/>
                     </div>
                     : null}
                 </div>
@@ -100,7 +97,7 @@ class ShowCards extends Component {
       }
 
 
-      
+
 
     render(){
         this.compareMyCards();

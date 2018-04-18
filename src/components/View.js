@@ -214,7 +214,7 @@ class View extends Component {
 
     clickCard(obj){
         console.log("whichOne", obj);
-        //call to get card by id 
+        //call to get card by id
         //https://api.pokemontcg.io/v1/cards?id=xy12-18
 
         this.setState({
@@ -236,6 +236,7 @@ class View extends Component {
         // add in our new fish
         const timestamp = Date.now();
         myCards[`card-${timestamp}`] = card;
+       myCards[`card-${timestamp}`].mycardid = `card-${timestamp}`;
         // set state
         this.setState({ myCards });
       }
@@ -281,10 +282,10 @@ class View extends Component {
         }
 
         if (currentCards.length > 0){
-            showCards = <ShowCards cards={currentCards} 
-            clickCard={this.clickCard} 
-            updateMyCards={this.updateMyCards} 
-            myCards={myCards} 
+            showCards = <ShowCards cards={currentCards}
+            clickCard={this.clickCard}
+            updateMyCards={this.updateMyCards}
+            myCards={myCards}
             addCard={this.addCard} />
         }
         return (

@@ -80,9 +80,9 @@ class ShowCardDetail extends Component {
             <CardSubtitle>Native Region: {this.props.currentPokemon.region}</CardSubtitle>
             </CardBody>
             {/*<select type="text" name="status" value={this.props.status} placeholder="Not Own" onChange={(e) => this.handleChange(e, key)}>
-                        <option value="own">Own</option>
-                        <option value="like">Like</option>
-                        <option value="noown">Not Own</option>
+                        <option value="caught">Caught</option>
+                        <option value="want">Want</option>
+                        <option value="wild">Wild</option>
             </select>
             <textarea type="text" name="desc" value={card.desc} placeholder="Desc" onChange={(e) => this.handleChange(e, key)}></textarea>
             */}

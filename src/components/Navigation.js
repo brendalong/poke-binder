@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import {
     Navbar,
-    NavbarBrand,
     Nav,
     NavLink,
-    NavItem,
-    Button } from 'reactstrap';
+    NavItem } from 'reactstrap';
 
 
 // function RegionsNav(props){

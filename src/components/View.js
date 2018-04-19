@@ -6,8 +6,6 @@ import ShowCards from './ShowCards';
 import ShowCardDetail from './ShowCardDetail';
 import { rebase } from '../constants';
 
-import { Container, Row, Col, CardDeck } from 'reactstrap';
-
 
 class View extends Component {
     constructor(props) {
@@ -18,7 +16,7 @@ class View extends Component {
             currentView: "regions",
             currentRegion: "Kanto",
             pokeLoaded: false,
-            pokemon: {},
+            pokemon: [],
             currentPokemon: {},
             currentCards: {},
             currentCard: null,
@@ -39,7 +37,7 @@ class View extends Component {
         this.updateMyCards = this.updateMyCards.bind(this);
         this.addCard = this.addCard.bind(this);
 
-        let activeName;
+        // let activeName;
 
         // this.makeSearchObj = this.makeSearchObj.bind(this);
         // this.updateRegionState = this.updateRegionState.bind(this);
@@ -62,7 +60,9 @@ class View extends Component {
             //   if (this.state.currentView === "regions") {
                 //for regional
                //aphabatize and add fbID
+
                let newArray;
+               console.log("what is new array here?", newArray);
                if (this.state.currentView === "regions"){
                     newArray = Object.keys(result).map((key, index) => {
                         result[key].fbid = key;
@@ -88,10 +88,7 @@ class View extends Component {
                 }
                //need to write for mine
 
-            this.setState({
-               pokeLoaded: true,
-               pokemon: newArray,
-              });
+            return newArray;
            },
            // Note: it's important to handle errors here
            // instead of a catch() block so that we don't swallow
@@ -103,16 +100,21 @@ class View extends Component {
                     error: error
                 });
             }
-        );
+        ).then((newArray) =>{
+            this.setState({
+                pokeLoaded: true,
+                pokemon: newArray,
+               });
+        });
     }
 
     componentWillMount() {
-    // this runs right before the <App> is rendered
-        this.ref = rebase.syncState(`/mine`, {
-        context: this,
-        state: 'myCards'
-        });
-    }
+        // this runs right before the <App> is rendered
+            this.ref = rebase.syncState(`/mine`, {
+            context: this,
+            state: 'myCards'
+            });
+        }
 
     componentWillUnmount() {
         rebase.removeBinding(this.ref);
@@ -127,13 +129,12 @@ class View extends Component {
 
     dataHandler(){
         const userRef = rebase.initializedApp.database().ref('mine');
-        console.log("view dataHandler", userRef);
 
         // query the firebase once for the user data
         userRef.once('value', (snapshot) => {
             const data = snapshot.val() || {};
             //snapshot - how does it look right now.
-            console.log("data", data);
+            console.log("user data", data);
         });
     }
 
@@ -153,7 +154,6 @@ class View extends Component {
             detailShowCritter: true,
             currentNotes:{},
             notesLoaded: false,
-            myCards: {},
         }, this.getPokemon);
     }
 
@@ -173,7 +173,6 @@ class View extends Component {
             detailShowCritter: true,
             currentNotes:{},
             notesLoaded: false,
-            myCards: {},
        }, this.getPokemon);
 
     }
@@ -232,6 +231,7 @@ class View extends Component {
         // add in our new fish
         const timestamp = Date.now();
         myCards[`card-${timestamp}`] = card;
+        myCards[`card-${timestamp}`].mycardid = `card-${timestamp}`;
         // set state
         this.setState({ myCards });
       }
@@ -262,17 +262,19 @@ class View extends Component {
     }
 
     render(){
+        console.log("render", this.state.pokeLoaded);
         const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter, myCards} = this.state;
         let showDetail;
         let showCards;
+        let showList;
 
         if (detailShowCritter){
             if (currentPokemon.name){
-                showDetail = <ShowDetail currentPokemon={currentPokemon} col-6 />;
+                showDetail = <ShowDetail currentPokemon={currentPokemon} />;
             }
         } else {
             if (currentCard){
-                showDetail = <ShowCardDetail img={currentCard} currentPokemon={currentPokemon} col-6/>
+                showDetail = <ShowCardDetail img={currentCard} currentPokemon={currentPokemon}/>
             }
         }
 
@@ -281,7 +283,12 @@ class View extends Component {
                         clickCard={this.clickCard} 
                         updateMyCards={this.updateMyCards} 
                         myCards={myCards} 
-                        addCard={this.addCard} />
+                        addCard={this.addCard}
+                        currentPokemon={currentPokemon} />
+        }
+
+        if (pokeLoaded){
+            showList = <ShowPokemon pokemon={pokemon} currentView={currentView} clickPokeName={this.clickPokeName} />
         }
         return (
             <div >
@@ -291,20 +298,20 @@ class View extends Component {
                     currentRegion={currentRegion}
                     changeRegion={this.changeRegion}
                     pokeLoaded={this.pokeLoaded} />
-                    <div className="container-fluid">
-                        <div class="row">
-                    <div class="col-2 poke-list">
-                        {/*<ShowPokemon whichView={currentView} searchObj={searchObj}/>*/}
-                        <ShowPokemon pokemon={pokemon}  currentView={currentView} clickPokeName={this.clickPokeName} />
-                    </div>
-                    <div class="col-6 poke-details">
-                        {showDetail}
-                    </div>
-                    <div class="col-4 poke-cards">
-                        {showCards}
-                    </div>
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-2 poke-list">
+                            {/*<ShowPokemon whichView={currentView} searchObj={searchObj}/>*/}
+                          {showList}
+                        </div>
+                        <div className="col-6 poke-details">
+                            {showDetail}
+                        </div>
+                        <div className="col-4 poke-cards">
+                            {showCards}
                         </div>
                     </div>
+                </div>
             </div>
         );
     }

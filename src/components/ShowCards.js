@@ -17,35 +17,46 @@ class ShowCards extends Component {
     handleChange(e, key) {
         //do we add the card or update
         // oneOfMine === true
-        console.log("my cards", this.props.myCards);
-        console.log(e, key);
+       
         if(this.props.cards[key].oneOfMine !== true){
             const newCard = {
                 ...this.props.cards[key],
                 [e.target.name]: e.target.value,
                 oneOfMine: true,
+                currentPokemon: this.props.currentPokemon.slug
             }
             this.props.addCard(newCard);
         }else{
-            const myCard = this.props.cards[key];
+            // const myCard = this.props.cards[key];
             // take a copy of that card and update it with the new data
             //look at my cards
-            const updatedCard = {
-            ...this.props.myCards,
-            [e.target.name]: e.target.value,
+            // const updatedCard = {
+            // ...this.props.myCards,
+            // [e.target.name]: e.target.value,
             
+            // }
+            // this.props.updateMyCards(key, updatedCard);
+            //need key of myCard
+           const myCard = this.props.myCards[this.props.cards[key].mycardid];
+           // take a copy of that card and update it with the new data
+            const updatedCard = {
+            ...this.props.myCard,
+            [e.target.name]: e.target.value,
+
             }
-            this.props.updateMyCards(key, updatedCard);
+           this.props.updateMyCards(this.props.cards[key].mycardid, updatedCard);
         }
       }
 
       objMap(key){
         this.props.cards.forEach((element) => {
+            //console.log
             if (this.props.myCards[key].id === element.id){
                 element.oneOfMine = this.props.myCards[key].oneOfMine;
                 element.notes = this.props.myCards[key].notes || null;
                 element.status = this.props.myCards[key].status || "caught";
-                console.log("got one", element);
+                element.mycardid = key;
+                //console.log("got one", element);
             }
         });
       }
@@ -76,7 +87,7 @@ class ShowCards extends Component {
        
         
         return (
-            <div className="row" key={key}>
+            <div className="row" key={key} mycardid={card.mycardid}>
             <div className="card mb-4 box-shadow bg-light border-info" >
                 <img className='card-img-top' src={card.imageUrl} alt={card.name} onClick={(e) => {this.props.clickCard(card)}}/>
                 {/*imageUrlHiRes */}
@@ -90,9 +101,9 @@ class ShowCards extends Component {
 
                     {card.oneOfMine ? 
                     <div>
-                        <textarea rows='1' type="text" className="form-control" name="notes" placeholder='notes' onChange={(e) => this.handleChange(e, key)}/>
+                    <textarea rows='1' type="text"  value={card.notes || ""} name="notes" placeholder='notes' onChange={(e) => this.handleChange(e, key)}/>
                     </div>
-                    : null}
+                    : <div></div>}
                 </div>
             </div>
             </div>

@@ -52,13 +52,14 @@ class View extends Component {
             url = `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
         }else if (this.state.currentView === "a-z"){
             url = "https://bell-pokemon.firebaseio.com/allPokemon.json"
+        }else if (this.state.currentView === "mine"){
+           url = "https://bell-pokemon.firebaseio.com/mine.json"
         }
+
         fetch(url)
         .then(res => res.json())
         .then(
            (result) => {
-            //   if (this.state.currentView === "regions") {
-                //for regional
                //aphabatize and add fbID
 
                let newArray;
@@ -74,7 +75,7 @@ class View extends Component {
                         var textB = b.pName;
                         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
                     });
-                }else if (this.state.currentView === "a-z"){
+               }else if (this.state.currentView === "a-z"){
                     newArray = Object.keys(result).map((key, index) => {
                         result[key].fbid = key;
                         return result[key];
@@ -84,9 +85,19 @@ class View extends Component {
                         var textB = b.name;
                         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
                     });
-
-                }
-               //need to write for mine
+               }
+               //  }else if (this.state.currentView === "mine") {
+               //    console.log("in the MINE", );
+               //    newArray = Object.keys(result).map((key, index) => {
+               //       result[key].fbid = key;
+               //       return result[key];
+               //    });
+               //    newArray.sort(function (a, b) {
+               //       var textA = a.name;
+               //       var textB = b.name;
+               //       return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+               //    });
+               // }
 
             return newArray;
            },
@@ -214,7 +225,7 @@ class View extends Component {
 
     clickCard(obj){
         console.log("whichOne", obj);
-        //call to get card by id 
+        //call to get card by id
         //https://api.pokemontcg.io/v1/cards?id=xy12-18
 
         this.setState({
@@ -228,7 +239,7 @@ class View extends Component {
     addCard(card) {
         // update our state
         const myCards = {...this.state.myCards};
-        // add in our new fish
+        // add in the new card
         const timestamp = Date.now();
         myCards[`card-${timestamp}`] = card;
         myCards[`card-${timestamp}`].mycardid = `card-${timestamp}`;
@@ -243,6 +254,7 @@ class View extends Component {
       };
 
     clickPokeName(whichOne){
+      whichOne = whichOne.toLowerCase();
         let url = `https://bell-pokemon.firebaseio.com/allPokemon.json?orderBy="slug"&equalTo="${whichOne}"`;
         fetch(url)
         .then(res => res.json())

@@ -63,15 +63,34 @@ class ShowPokemon extends Component {
                     }>{poke.name}</p>
                 </div>
             )
-        }
-    }
+         }else if (this.props.currentView === "mine") {
+           return (
+              <div className="poke-box" key={key}>
+                 <p onClick={((e) => {
+                    {(this.state.activeElement) ?
+                       this.state.activeElement.classList.remove("activePokemon")
+                       : null
+                    }
+                    this.setState({
+                       activeElement: e.target,
+                    })
+                    e.target.classList.add("activePokemon");
+                    this.props.clickPokeName(poke.currentPokemon)
+                 })
+                 }>{firstLetterCase(poke.currentPokemon)}</p>
+              </div>
+            )
+         }
+      }
 
     render(){
+       console.log("pokemon props", this.props.pokemon.length);
+
          return (
             <div>
                {Object.keys(this.props.pokemon).map(this.renderPokemon)}
             </div>
          );
-    }  
+    }
 }
 export default ShowPokemon;

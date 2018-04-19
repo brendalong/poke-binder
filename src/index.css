@@ -35,7 +35,7 @@ a.nav-link.disabled{
 .poke-list {
   background-color: #0074d9;
   text-align: center;
-  height:87vh;
+  height:82vh;
   position: relative;
   /* top: 0px; */
   /* bottom: 0; */
@@ -46,7 +46,7 @@ a.nav-link.disabled{
 .poke-cards {
   background-color: #7fdbff;
   text-align: center;
-  height:87vh;
+  height:82vh;
   position: relative;
   /* top: 0px; */
   /* bottom: 0; */
@@ -57,7 +57,7 @@ a.nav-link.disabled{
 .poke-details {
   background-color: #7fdbff;
   text-align: center;
-  height:87vh;
+  height:82vh;
   position: relative;
   /* top: 0px;
   bottom: 0;
@@ -68,8 +68,4 @@ a.nav-link.disabled{
 .poke-details .card{
   background-color: #7fdbff;
   border: 0px solid rgba(0,0,0,.125);
-}
-
-.cardDetail {
-  /* width: 80%; */
 }

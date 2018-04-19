@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import {
     Navbar,
-    NavbarBrand,
     Nav,
     NavLink,
-    NavItem,
-    Button } from 'reactstrap';
+    NavItem } from 'reactstrap';
 
 
 // function RegionsNav(props){
@@ -52,7 +50,7 @@ class Navigation extends Component {
                     <NavLink onClick={this.props.changeView} id="a-z" disabled={cv==="a-z"}>A-Z</NavLink>
                     </NavItem>
                     <NavItem>
-                    <NavLink onClick={this.props.changeView} id="mine" disabled={cv==="mine"}>Mine</NavLink>
+                    <NavLink onClick={this.props.changeView} id="mine" disabled>Mine</NavLink>
                     </NavItem>
 
                 </Nav>
@@ -81,7 +79,7 @@ class Navigation extends Component {
                   <li className="nav-item">
                   <NavLink onClick={this.props.changeRegion} id="Alola" disabled={cr==="Alola"}>Alola</NavLink>
                   </li>
-               </ul> : null}
+               </ul> : <ul className="nav justify-content-end subnav"><li><NavLink className="nav-link">.</NavLink> </li></ul>}
             </div>
         );
     }

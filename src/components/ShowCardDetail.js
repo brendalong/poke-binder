@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Card, CardImg, CardBody, CardTitle, CardText, CardSubtitle } from 'reactstrap';
+    Card, CardImg, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 
 class ShowCardDetail extends Component {
 
@@ -8,10 +8,6 @@ class ShowCardDetail extends Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
-
-        var imgStyle = {
-            width: '70hw',
-          };
 
         // this.state = {
         //     cardDetail: {},
@@ -45,18 +41,6 @@ class ShowCardDetail extends Component {
     //     .catch(err => console.log(err));
     // }
 
-    // componentWillMount() {
-    //     // this runs right before the rendered
-    //     this.ref = rebase.syncState(`/mine/${this.props.user}/songs`, {
-    //        context: this,
-    //        state: 'cardDetail'
-    //      });
-    //    }
-
-    // componentWillUnmount() {
-    //     rebase.removeBinding(this.ref);
-    // }
-
 
 
     handleChange(e, key) {
@@ -79,13 +63,6 @@ class ShowCardDetail extends Component {
             <CardTitle>#{this.props.currentPokemon.id} {this.props.currentPokemon.name}</CardTitle>
             <CardSubtitle>Native Region: {this.props.currentPokemon.region}</CardSubtitle>
             </CardBody>
-            {/*<select type="text" name="status" value={this.props.status} placeholder="Not Own" onChange={(e) => this.handleChange(e, key)}>
-                        <option value="caught">Caught</option>
-                        <option value="want">Want</option>
-                        <option value="wild">Wild</option>
-            </select>
-            <textarea type="text" name="desc" value={card.desc} placeholder="Desc" onChange={(e) => this.handleChange(e, key)}></textarea>
-            */}
             </Card>
          </div>
       );

@@ -35,7 +35,7 @@ a.nav-link.disabled{
 .poke-list {
   background-color: #0074d9;
   text-align: center;
-  height:92vh;
+  height:82vh;
   position: relative;
   /* top: 0px; */
   /* bottom: 0; */
@@ -46,22 +46,22 @@ a.nav-link.disabled{
 .poke-cards {
   background-color: #7fdbff;
   text-align: center;
-  height:92vh;
+  height:82vh;
   position: relative;
   /* top: 0px; */
   /* bottom: 0; */
-  left: 0;
+  /* left: 0; */
   overflow-y: scroll;
 }
 
 .poke-details {
   background-color: #7fdbff;
   text-align: center;
-  height:92vh;
+  height:82vh;
   position: relative;
-  top: 0px;
+  /* top: 0px;
   bottom: 0;
-  left: 0;
+  left: 0; */
   overflow-y: scroll;
 }
 
@@ -69,23 +69,3 @@ a.nav-link.disabled{
   background-color: #7fdbff;
   border: 0px solid rgba(0,0,0,.125);
 }
-
-.cardDetail {
-  width: 80%;
-}
-
-/* .poke-list,
-.poke-cards,
-.poke-details {
-  overflow: auto;
-  height: auto;
-  padding: .5rem;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
-} */
-/*Entirely optional – just wanted to remove the scrollbar on WebKit browsers as I find them ugly*/
-/* .Left::-webkit-scrollbar,
-.Middle::-webkit-scrollbar,
-.Right::-webkit-scrollbar {
-  display: none;
-} */

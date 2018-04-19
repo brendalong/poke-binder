@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Card, CardImg, CardBody, CardTitle, CardText, CardSubtitle } from 'reactstrap';
+    Card, CardImg, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import {splitTypeArray} from '../helpers';
 
 //Functional components just receive props (which we destructured with ES6) as arguments and return JSX to be rendered.

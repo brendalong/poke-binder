@@ -4,7 +4,6 @@ import {splitTypeArray} from '../helpers';
 
 
 function ShowDetail(props){
-   console.log("show detail Image", props.currentPokemon.FullImageURL);
     return (
        <div>
        <Card>

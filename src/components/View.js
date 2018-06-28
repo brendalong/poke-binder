@@ -125,7 +125,6 @@ class View extends Component {
 
     componentDidMount() {
         //lifecycle hook
-        console.log("componentDidMount");
         this.getPokemon();
         this.dataHandler();
     }

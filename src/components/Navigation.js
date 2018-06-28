@@ -6,34 +6,11 @@ import {
     NavItem } from 'reactstrap';
 
 
-// function RegionsNav(props){
-//     //currently not using!!
-//     let cr = props.currentRegion;
-
-//     return (
-//     <Navbar color="light" light>
-//         <NavbarBrand href="/">Choose Region</NavbarBrand>
-//         <Nav tabs>
-//             <NavLink onClick={props.changeRegion} id="Kanto" disabled={cr==="Kanto"} >Kanto</NavLink>
-//             <NavLink onClick={props.changeRegion} id="Johto" disabled={cr==="Johto"} >Johto</NavLink>
-//             <NavLink onClick={props.changeRegion} id="Hoenn" disabled={cr==="Hoenn"} >Hoenn</NavLink>
-//             <NavLink onClick={props.changeRegion} id="Sinnoh" disabled={cr==="Sinnoh"} >Sinnoh</NavLink>
-//             <NavLink onClick={props.changeRegion} id="Unova" disabled={cr==="Unova"}>Unova</NavLink>
-//             <NavLink onClick={props.changeRegion} id="Kalos" disabled={cr==="Kalos"}>Kalos</NavLink>
-//             <NavLink onClick={props.changeRegion} id="Alola" disabled={cr==="Alola"}>Alola</NavLink>
-//         </Nav>
-//     </Navbar>
-//     )
-// }
-
-
 class Navigation extends Component {
     constructor(props){
         super(props);
 
     }
-
-
 
     render () {
         let cv = this.props.currentView;

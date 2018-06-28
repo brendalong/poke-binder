@@ -37,17 +37,11 @@ class View extends Component {
         this.updateMyCards = this.updateMyCards.bind(this);
         this.addCard = this.addCard.bind(this);
 
-        // let activeName;
-
-        // this.makeSearchObj = this.makeSearchObj.bind(this);
-        // this.updateRegionState = this.updateRegionState.bind(this);
     }
 
     getPokemon(){
-        console.log("getPokemon", this.state.currentView, this.state.currentRegion);
         let url;
         if (this.state.currentView === "regions"){
-            // console.log("url", `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`);
             //look in regional
             url = `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
         }else if (this.state.currentView === "a-z"){
@@ -61,9 +55,7 @@ class View extends Component {
         .then(
            (result) => {
                //aphabatize and add fbID
-
                let newArray;
-               console.log("what is new array here?", newArray);
                if (this.state.currentView === "regions"){
                     newArray = Object.keys(result).map((key, index) => {
                         result[key].fbid = key;
@@ -120,7 +112,7 @@ class View extends Component {
     }
 
     componentWillMount() {
-        // this runs right before the <App> is rendered
+        //this runs right before the <App> is rendered
             this.ref = rebase.syncState(`/mine`, {
             context: this,
             state: 'myCards'
@@ -145,13 +137,10 @@ class View extends Component {
         userRef.once('value', (snapshot) => {
             const data = snapshot.val() || {};
             //snapshot - how does it look right now.
-            console.log("user data", data);
         });
     }
 
     changeView(event){
-       console.log("changeView event", event.target.id);
-
         this.setState({
          currentView: event.target.id,
          pokeLoaded: false,
@@ -169,8 +158,6 @@ class View extends Component {
     }
 
     changeRegion(event){
-       console.log("changeRegion", event.target.id);
-
        this.setState( {
           currentRegion: event.target.id,
           pokeLoaded: false,
@@ -191,7 +178,6 @@ class View extends Component {
 
 
     makeSearchObj(){
-        console.log("makeObj", this.state.currentRegion);
         let searchObj = {
             currentView: this.state.currentView,
             currentRegion: this.state.currentRegion,
@@ -202,20 +188,16 @@ class View extends Component {
 
 
     getCards(){
-        console.log("getCards", this.state.currentPokemon);
         let url = `https://api.pokemontcg.io/v1/cards?name=${this.state.currentPokemon.name}`;
         fetch(url)
         .then(res => res.json())
         .then(
             (result) => {
-                // console.log(result);
-
                 this.setState({
                     currentCards: result.cards,
                 });
             },
         (error) => {
-            console.log("error", error);
              this.setState({
                  cardIsLoaded: true,
                  cardError: error
@@ -224,7 +206,6 @@ class View extends Component {
     }
 
     clickCard(obj){
-        console.log("whichOne", obj);
         //call to get card by id
         //https://api.pokemontcg.io/v1/cards?id=xy12-18
 
@@ -237,7 +218,7 @@ class View extends Component {
     }
 
     addCard(card) {
-        // update our state
+        // update state
         const myCards = {...this.state.myCards};
         // add in the new card
         const timestamp = Date.now();
@@ -259,8 +240,7 @@ class View extends Component {
         fetch(url)
         .then(res => res.json())
         .then(data => {
-           console.log("the data of clickpokeName", data);
-            //need to get data out of key
+            //get data out of key
 
             let key = Object.keys(data)[0];
             data[key].fbID = key;
@@ -274,7 +254,6 @@ class View extends Component {
     }
 
     render(){
-        console.log("render", this.state.pokeLoaded);
         const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter, myCards} = this.state;
         let showDetail;
         let showCards;
@@ -313,7 +292,6 @@ class View extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-2 poke-list">
-                            {/*<ShowPokemon whichView={currentView} searchObj={searchObj}/>*/}
                           {showList}
                         </div>
                         <div className="col-6 poke-details">

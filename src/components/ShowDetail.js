@@ -1,9 +1,7 @@
 import React from 'react';
-import {
-    Card, CardImg, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
+import { Card, CardImg, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import {splitTypeArray} from '../helpers';
 
-//Functional components just receive props (which we destructured with ES6) as arguments and return JSX to be rendered.
 
 function ShowDetail(props){
    console.log("show detail Image", props.currentPokemon.FullImageURL);

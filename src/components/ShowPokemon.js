@@ -7,14 +7,6 @@ class ShowPokemon extends Component {
         super(props);
 
         this.renderPokemon = this.renderPokemon.bind(this);
-        // console.log("pokemon props", this.props.pokemon);
-        // let searchObj = props.searchObj;
-        // this.state = {
-        //     pokemon: searchObj.pokemon,
-        //     pokeLoaded: searchObj.pokeLoaded,
-        //     error: null,
-        //     currentRegion: searchObj.currentRegion
-        // }
 
         this.state ={
             activeElement: null,
@@ -22,8 +14,6 @@ class ShowPokemon extends Component {
     }
 
     componentDidMount() {
-        //lifecycle hook
-        //console.log("showpokemon componentDidMount");
         this.setState({
             activeElement: null,
         });
@@ -84,8 +74,6 @@ class ShowPokemon extends Component {
       }
 
     render(){
-       console.log("pokemon props", this.props.pokemon.length);
-
          return (
             <div>
                {Object.keys(this.props.pokemon).map(this.renderPokemon)}

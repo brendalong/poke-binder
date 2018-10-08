@@ -55,6 +55,7 @@ class View extends Component {
         .then(
            (result) => {
                //aphabatize and add fbID
+               console.log("new result", result);
                let newArray;
                if (this.state.currentView === "regions"){
                     newArray = Object.keys(result).map((key, index) => {
@@ -140,6 +141,7 @@ class View extends Component {
     }
 
     changeView(event){
+       console.log("event", event);
         this.setState({
          currentView: event.target.id,
          pokeLoaded: false,
@@ -269,10 +271,10 @@ class View extends Component {
         }
 
         if (currentCards.length > 0){
-            showCards = <ShowCards cards={currentCards} 
-                        clickCard={this.clickCard} 
-                        updateMyCards={this.updateMyCards} 
-                        myCards={myCards} 
+            showCards = <ShowCards cards={currentCards}
+                        clickCard={this.clickCard}
+                        updateMyCards={this.updateMyCards}
+                        myCards={myCards}
                         addCard={this.addCard}
                         currentPokemon={currentPokemon} />
         }

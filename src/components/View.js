@@ -8,38 +8,23 @@ import { rebase } from '../constants';
 
 
 class View extends Component {
-    constructor(props) {
-      super(props);
+    state = {
+        currentView: "regions",
+        currentRegion: "Kanto",
+        pokeLoaded: false,
+        pokemon: [],
+        currentPokemon: {},
+        currentCards: {},
+        currentCard: null,
+        cardIsLoaded: true,
+        cardError: null,
+        detailShowCritter: true,
+        currentNotes:{},
+        notesLoaded: false,
+        myCards: {},
+    };
 
-        // getinitialState
-        this.state = {
-            currentView: "regions",
-            currentRegion: "Kanto",
-            pokeLoaded: false,
-            pokemon: [],
-            currentPokemon: {},
-            currentCards: {},
-            currentCard: null,
-            cardIsLoaded: true,
-            cardError: null,
-            detailShowCritter: true,
-            currentNotes:{},
-            notesLoaded: false,
-            myCards: {},
-        };
-
-        this.changeView = this.changeView.bind(this);
-        this.changeRegion = this.changeRegion.bind(this);
-        this.getPokemon = this.getPokemon.bind(this);
-        this.clickPokeName = this.clickPokeName.bind(this);
-        this.getCards = this.getCards.bind(this);
-        this.clickCard = this.clickCard.bind(this);
-        this.updateMyCards = this.updateMyCards.bind(this);
-        this.addCard = this.addCard.bind(this);
-
-    }
-
-    getPokemon(){
+    getPokemon = () => {
         let url;
         if (this.state.currentView === "regions"){
             //look in regional
@@ -140,7 +125,7 @@ class View extends Component {
         });
     }
 
-    changeView(event){
+    changeView = (event) => {
        console.log("event", event);
         this.setState({
          currentView: event.target.id,
@@ -158,7 +143,7 @@ class View extends Component {
         }, this.getPokemon);
     }
 
-    changeRegion(event){
+    changeRegion = (event) => {
        this.setState( {
           currentRegion: event.target.id,
           pokeLoaded: false,
@@ -188,7 +173,7 @@ class View extends Component {
 
 
 
-    getCards(){
+    getCards = () => {
         let url = `https://api.pokemontcg.io/v1/cards?name=${this.state.currentPokemon.name}`;
         fetch(url)
         .then(res => res.json())
@@ -206,7 +191,7 @@ class View extends Component {
         });
     }
 
-    clickCard(obj){
+    clickCard = (obj) => {
         //call to get card by id
         //https://api.pokemontcg.io/v1/cards?id=xy12-18
 
@@ -218,7 +203,7 @@ class View extends Component {
         });
     }
 
-    addCard(card) {
+    addCard = (card) => {
         // update state
         const myCards = {...this.state.myCards};
         // add in the new card
@@ -235,7 +220,7 @@ class View extends Component {
         this.setState({ myCards });
       };
 
-    clickPokeName(whichOne){
+    clickPokeName = (whichOne) => {
       whichOne = whichOne.toLowerCase();
         let url = `https://bell-pokemon.firebaseio.com/allPokemon.json?orderBy="slug"&equalTo="${whichOne}"`;
         fetch(url)

@@ -5,9 +5,11 @@ import ShowDetail from './ShowDetail';
 import ShowCards from './ShowCards';
 import ShowCardDetail from './ShowCardDetail';
 import { rebase } from '../constants';
+import APIManager from '../modules/dbcalls'
 
 
 class View extends Component {
+
     state = {
         currentView: "regions",
         currentRegion: "Kanto",
@@ -25,45 +27,47 @@ class View extends Component {
     };
 
     getPokemon = () => {
-        let url;
+        // let url;
+        let dataTable;
         if (this.state.currentView === "regions"){
             //look in regional
-            url = `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
+            // url = `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
+            dataTable = `regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
         }else if (this.state.currentView === "a-z"){
-            url = "https://bell-pokemon.firebaseio.com/allPokemon.json"
+            // url = "https://bell-pokemon.firebaseio.com/allPokemon.json"
+            dataTable = "allPokemon.json"
         }else if (this.state.currentView === "mine"){
-           url = "https://bell-pokemon.firebaseio.com/mine.json"
+        //    url = "https://bell-pokemon.firebaseio.com/mine.json"
+           dataTable = "mine.json"
         }
 
-        fetch(url)
-        .then(res => res.json())
+        APIManager.getAll(dataTable)
+        // fetch(url)
+        // .then(res => res.json())
         .then(
            (result) => {
-               //aphabatize and add fbID
-               console.log("new result", result);
-               let newArray;
-               if (this.state.currentView === "regions"){
-                    newArray = Object.keys(result).map((key, index) => {
-                        result[key].fbid = key;
-                        return result[key];
-                    });
+                //add fbID 
+                let newArray = Object.keys(result).map((key, index) => {
+                    result[key].fbid = key;
+                    return result[key];
+                });
+                //alphabetize
+                let regionsProp = "pName";
+                let azProp = "name";
+                let propVal;
 
-                    newArray.sort(function(a, b) {
-                        var textA = a.pName;
-                        var textB = b.pName;
-                        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-                    });
-               }else if (this.state.currentView === "a-z"){
-                    newArray = Object.keys(result).map((key, index) => {
-                        result[key].fbid = key;
-                        return result[key];
-                    });
-                    newArray.sort(function(a, b) {
-                        var textA = a.name;
-                        var textB = b.name;
-                        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-                    });
-               }
+                if (this.state.currentView === "regions"){
+                    propVal = regionsProp;
+                }else if (this.state.currentView === "a-z"){
+                    propVal = azProp;
+                }
+                //TODO Add one for mine
+                newArray.sort(function(a, b) {
+                    var textA = a[propVal];
+                    let textB = b[propVal];
+                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                });
+
                //  }else if (this.state.currentView === "mine") {
                //    console.log("in the MINE", );
                //    newArray = Object.keys(result).map((key, index) => {
@@ -77,7 +81,7 @@ class View extends Component {
                //    });
                // }
 
-            return newArray;
+                return newArray;
            },
            // Note: it's important to handle errors here
            // instead of a catch() block so that we don't swallow

@@ -42,8 +42,6 @@ class View extends Component {
         }
 
         APIManager.getAll(dataTable)
-        // fetch(url)
-        // .then(res => res.json())
         .then(
            (result) => {
                 //add fbID 
@@ -93,10 +91,10 @@ class View extends Component {
                     error: error
                 });
             }
-        ).then((newArray) =>{
+        ).then((result) =>{
             this.setState({
                 pokeLoaded: true,
-                pokemon: newArray,
+                pokemon: result,
                });
         });
     }
@@ -178,11 +176,8 @@ class View extends Component {
 
 
     getCards = () => {
-        let url = `https://api.pokemontcg.io/v1/cards?name=${this.state.currentPokemon.name}`;
-        fetch(url)
-        .then(res => res.json())
-        .then(
-            (result) => {
+        APIManager.getCards(this.state.currentPokemon.name)
+        .then((result) => {
                 this.setState({
                     currentCards: result.cards,
                 });
@@ -225,13 +220,10 @@ class View extends Component {
       };
 
     clickPokeName = (whichOne) => {
-      whichOne = whichOne.toLowerCase();
-        let url = `https://bell-pokemon.firebaseio.com/allPokemon.json?orderBy="slug"&equalTo="${whichOne}"`;
-        fetch(url)
-        .then(res => res.json())
+        whichOne = whichOne.toLowerCase();
+        APIManager.getOneDetails(whichOne)
         .then(data => {
             //get data out of key
-
             let key = Object.keys(data)[0];
             data[key].fbID = key;
             this.setState({

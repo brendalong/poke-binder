@@ -119,7 +119,6 @@ class View extends Component {
 
     dataHandler(){
         const userRef = rebase.initializedApp.database().ref('mine');
-
         // query the firebase once for the user data
         userRef.once('value', (snapshot) => {
             const data = snapshot.val() || {};
@@ -163,8 +162,6 @@ class View extends Component {
 
     }
 
-
-
     makeSearchObj(){
         let searchObj = {
             currentView: this.state.currentView,
@@ -172,8 +169,6 @@ class View extends Component {
         }
         return searchObj;
     }
-
-
 
     getCards = () => {
         APIManager.getCards(this.state.currentPokemon.name)
@@ -214,6 +209,7 @@ class View extends Component {
       }
 
     updateMyCards = (key, updatedCard) => {
+        console.log("key", key, "updatedCard", updatedCard);
         const myCards = {...this.state.myCards};
         myCards[key] = updatedCard;
         this.setState({ myCards });

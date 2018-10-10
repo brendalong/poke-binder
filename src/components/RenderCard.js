@@ -5,7 +5,7 @@ class RenderCard extends Component {
     state = {
         card: {},
     }
-//// fix the key.
+
     handleChange = (e, key) => {
         console.log("handle change", e, key);
         //do we add the card or update
@@ -16,18 +16,8 @@ class RenderCard extends Component {
                 oneOfMine: true,
                 currentPokemon: this.props.currentPokemon,
             }
-            // console.log("new card", newCard);
             this.props.addCard(newCard);
         }else{
-        //    const myCard = this.props.myCards[this.props.cards[key].mycardid];
-        //    // take a copy of that card and update it with the new data
-        //     const updatedCard = {
-        //     ...this.props.myCard,
-        //     [e.target.name]: e.target.value,
-        //     }
-        //    this.props.updateMyCards(this.props.cards[key].mycardid, updatedCard);
-
-            const myCard = this.state.card.mycardid;
             if (e.target.name === "status"){
                 //go ahead and update 
                 const updatedCard = {
@@ -35,26 +25,26 @@ class RenderCard extends Component {
                 [e.target.name]: e.target.value,
                 }
                 this.setState({card:updatedCard});
-                this.props.updateMyCards(this.state.card.mycardid, this.state.card);
+                this.props.updateMyCards(this.state.card.mycardid, updatedCard);
             }else{
                //make change to notes - get from state
+               console.log("make change to note")
                const updatedCard = {
                    ...this.state.card,
                    [e.target.name]: e.target.value,
                }
                this.setState({card: updatedCard});
-            //    this.props.updateMyCards(this.props.cards[key].mycardid, updatedCard);
             }
-            if(e.target.name === "saveNote"){
-                this.props.updateMyCards(this.state.card.mycardid, this.state.updatedCard);
-            }
-
-        //    flow
-        //    dropdown change, keep if statement and addCard
-        //    textbox change, on changes, setState to value
-        //    touch Save: make updateCard based on values in state
+        // flow
+        // dropdown change, keep if statement and addCard
+        // textbox change, on changes, setState to value
+        // touch Save: make updateCard based on values in state
             
         }
+      }
+
+      saveNote = () => {
+        this.props.updateMyCards(this.state.card.mycardid, this.state.card);
       }
 
       componentDidMount(){
@@ -64,14 +54,9 @@ class RenderCard extends Component {
 
 
     render(){
-        
-        // const card = this.props.cards[key];
         const card = this.state.card;
         const item = this.props.item;
-        // if (!card.status){
-        //     card.status = 'wild';
-        // }
-
+    
         return (
             <div className="row" mycardid={card.mycardid}>
             <div className="card mb-4 box-shadow bg-light border-info" >

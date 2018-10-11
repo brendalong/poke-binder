@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import LoginModal from './LoginModal';
 
 
 class RenderCard extends Component {
@@ -60,6 +61,7 @@ class RenderCard extends Component {
             <div className="row" mycardid={card.mycardid}>
             <div className="card mb-4 box-shadow bg-light border-info" >
                 <img className='card-img-top' src={this.state.card.imageUrl} alt={this.state.card.name} onClick={(e) => {this.props.clickCard(card)}}/>
+                {this.props.auth ?
                 <div className="card-body">
                     <select type="text" name="status" value={this.state.card.status || "wild"} placeholder="Card Status" onChange={(e) => this.handleChange(e, item)}>
                         <option value="caught">Caught!</option>
@@ -74,6 +76,7 @@ class RenderCard extends Component {
                     </div>
                     : <div></div>}
                 </div>
+                :<div><LoginModal buttonLabel="Login" loginWithGoogle={this.props.loginWithGoogle} /> to save cards to your binder</div>}
             </div>
             </div>
         )

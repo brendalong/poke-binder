@@ -12,10 +12,6 @@ const navCursor = {
 };
 
 class Navigation extends Component {
-    constructor(props){
-        super(props);
-
-    }
    
     render () {
         let cv = this.props.currentView;

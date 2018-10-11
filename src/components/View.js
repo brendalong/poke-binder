@@ -242,14 +242,23 @@ class View extends Component {
 // https://coderjourney.com/tutorials/how-to-add-authentication-to-react-with-firebase/
 // https://firebase.google.com/docs/auth/web/google-signin
 
+    updateUser=(user)=>{
+        this.setState({
+            auth: true,
+            user: user.uid,
+        })
+    }
+
     loginWithGoogle = () => {
         console.log("login with google called");
         app.auth().signInWithPopup(googleProvider).then(function(result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
             // var token = result.credential.accessToken;
             // The signed-in user info.
-            console.log("what is result user", result.user);
-            var user = result.user;
+            
+            const user = result.user;
+            console.log("what is result user", user);
+            this.updateUser(user);
             //now have user
             //need to setstate with user
             //need to sync user db 
@@ -267,12 +276,26 @@ class View extends Component {
           });
     }
 
+    logout = () => {
+        app.auth().signOut().then(function() {
+            // Sign-out successful.
+            //need to get rid of binding
+            // rebase.removeBinding(this.ref);
+            this.setState({
+                auth: false,
+                user: null,
+            })
+          }).catch(function(error) {
+            // An error happened.
+          });
+    }
+
    authHandler = (e) => {
     console.log("authHandler", e);
     }
 
     render(){
-        const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter, myCards} = this.state;
+        const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter, myCards, auth} = this.state;
         let showDetail;
         let showCards;
         let showList;
@@ -295,7 +318,9 @@ class View extends Component {
                         updateMyCards={this.updateMyCards}
                         myCards={myCards}
                         addCard={this.addCard}
-                        currentPokemon={currentPokemon} />
+                        currentPokemon={currentPokemon} 
+                        auth={auth} 
+                        loginWithGoogle={this.loginWithGoogle}/>
         }
 
         if (pokeLoaded){

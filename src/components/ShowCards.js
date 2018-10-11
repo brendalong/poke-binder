@@ -45,7 +45,9 @@ class ShowCards extends Component {
                     addCard={this.props.addCard} 
                     currentPokemon={this.props.currentPokemon.slug}
                     updateMyCards={this.props.updateMyCards} 
-                    clickCard={this.props.clickCard} />
+                    clickCard={this.props.clickCard} 
+                    auth={this.props.auth} 
+                    loginWithGoogle={this.props.loginWithGoogle}/>
                 })
                 }
             </div>

@@ -237,6 +237,8 @@ class View extends Component {
         if (detailShowCritter){
             if (currentPokemon.name){
                 showDetail = <ShowDetail currentPokemon={currentPokemon} />;
+            }else{
+                showDetail =  <div className="instructions"><p>&#8592; Get started by choosing a Pokemon</p></div>
             }
         } else {
             if (currentCard){

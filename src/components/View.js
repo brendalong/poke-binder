@@ -5,79 +5,64 @@ import ShowDetail from './ShowDetail';
 import ShowCards from './ShowCards';
 import ShowCardDetail from './ShowCardDetail';
 import { rebase } from '../constants';
+import APIManager from '../modules/dbcalls'
 
 
 class View extends Component {
-    constructor(props) {
-      super(props);
 
-        // getinitialState
-        this.state = {
-            currentView: "regions",
-            currentRegion: "Kanto",
-            pokeLoaded: false,
-            pokemon: [],
-            currentPokemon: {},
-            currentCards: {},
-            currentCard: null,
-            cardIsLoaded: true,
-            cardError: null,
-            detailShowCritter: true,
-            currentNotes:{},
-            notesLoaded: false,
-            myCards: {},
-        };
+    state = {
+        currentView: "regions",
+        currentRegion: "Kanto",
+        pokeLoaded: false,
+        pokemon: [],
+        currentPokemon: {},
+        currentCards: {},
+        currentCard: null,
+        cardIsLoaded: true,
+        cardError: null,
+        detailShowCritter: true,
+        currentNotes:{},
+        notesLoaded: false,
+        myCards: {},
+    };
 
-        this.changeView = this.changeView.bind(this);
-        this.changeRegion = this.changeRegion.bind(this);
-        this.getPokemon = this.getPokemon.bind(this);
-        this.clickPokeName = this.clickPokeName.bind(this);
-        this.getCards = this.getCards.bind(this);
-        this.clickCard = this.clickCard.bind(this);
-        this.updateMyCards = this.updateMyCards.bind(this);
-        this.addCard = this.addCard.bind(this);
-
-    }
-
-    getPokemon(){
-        let url;
+    getPokemon = () => {
+        // let url;
+        let dataTable;
         if (this.state.currentView === "regions"){
             //look in regional
-            url = `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
+            dataTable = `regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
         }else if (this.state.currentView === "a-z"){
-            url = "https://bell-pokemon.firebaseio.com/allPokemon.json"
+            dataTable = "allPokemon.json"
         }else if (this.state.currentView === "mine"){
-           url = "https://bell-pokemon.firebaseio.com/mine.json"
+           dataTable = "mine.json"
         }
 
-        fetch(url)
-        .then(res => res.json())
+        APIManager.getAll(dataTable)
         .then(
            (result) => {
-               //aphabatize and add fbID
-               let newArray;
-               if (this.state.currentView === "regions"){
-                    newArray = Object.keys(result).map((key, index) => {
-                        result[key].fbid = key;
-                        return result[key];
-                    });
+                //add fbID 
+                let newArray = Object.keys(result).map((key, index) => {
+                    result[key].fbid = key;
+                    return result[key];
+                });
+                //alphabetize
+                let regionsProp = "pName";
+                let azProp = "name";
+                let propVal;
 
-                    newArray.sort(function(a, b) {
-                        var textA = a.pName;
-                        var textB = b.pName;
-                        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-                    });
-               }else if (this.state.currentView === "a-z"){
-                    newArray = Object.keys(result).map((key, index) => {
-                        result[key].fbid = key;
-                        return result[key];
-                    });
-                    newArray.sort(function(a, b) {
-                        var textA = a.name;
-                        var textB = b.name;
-                        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-                    });
-               }
+                if (this.state.currentView === "regions"){
+                    propVal = regionsProp;
+                }else if (this.state.currentView === "a-z"){
+                    propVal = azProp;
+                }
+                //TODO Add one for mine
+                newArray.sort(function(a, b) {
+                    var textA = a[propVal];
+                    let textB = b[propVal];
+                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                });
+
                //  }else if (this.state.currentView === "mine") {
                //    console.log("in the MINE", );
                //    newArray = Object.keys(result).map((key, index) => {
@@ -91,7 +76,7 @@ class View extends Component {
                //    });
                // }
 
-            return newArray;
+                return newArray;
            },
            // Note: it's important to handle errors here
            // instead of a catch() block so that we don't swallow
@@ -103,10 +88,10 @@ class View extends Component {
                     error: error
                 });
             }
-        ).then((newArray) =>{
+        ).then((result) =>{
             this.setState({
                 pokeLoaded: true,
-                pokemon: newArray,
+                pokemon: result,
                });
         });
     }
@@ -124,14 +109,12 @@ class View extends Component {
     }
 
     componentDidMount() {
-        //lifecycle hook
         this.getPokemon();
         this.dataHandler();
     }
 
     dataHandler(){
         const userRef = rebase.initializedApp.database().ref('mine');
-
         // query the firebase once for the user data
         userRef.once('value', (snapshot) => {
             const data = snapshot.val() || {};
@@ -139,7 +122,7 @@ class View extends Component {
         });
     }
 
-    changeView(event){
+    changeView = (event) => {
         this.setState({
          currentView: event.target.id,
          pokeLoaded: false,
@@ -156,7 +139,7 @@ class View extends Component {
         }, this.getPokemon);
     }
 
-    changeRegion(event){
+    changeRegion = (event) => {
        this.setState( {
           currentRegion: event.target.id,
           pokeLoaded: false,
@@ -174,8 +157,6 @@ class View extends Component {
 
     }
 
-
-
     makeSearchObj(){
         let searchObj = {
             currentView: this.state.currentView,
@@ -184,14 +165,9 @@ class View extends Component {
         return searchObj;
     }
 
-
-
-    getCards(){
-        let url = `https://api.pokemontcg.io/v1/cards?name=${this.state.currentPokemon.name}`;
-        fetch(url)
-        .then(res => res.json())
-        .then(
-            (result) => {
+    getCards = () => {
+        APIManager.getCards(this.state.currentPokemon.name)
+        .then((result) => {
                 this.setState({
                     currentCards: result.cards,
                 });
@@ -204,7 +180,7 @@ class View extends Component {
         });
     }
 
-    clickCard(obj){
+    clickCard = (obj) => {
         //call to get card by id
         //https://api.pokemontcg.io/v1/cards?id=xy12-18
 
@@ -216,7 +192,7 @@ class View extends Component {
         });
     }
 
-    addCard(card) {
+    addCard = (card) => {
         // update state
         const myCards = {...this.state.myCards};
         // add in the new card
@@ -233,20 +209,20 @@ class View extends Component {
         this.setState({ myCards });
       };
 
-    clickPokeName(whichOne){
-      whichOne = whichOne.toLowerCase();
-        let url = `https://bell-pokemon.firebaseio.com/allPokemon.json?orderBy="slug"&equalTo="${whichOne}"`;
-        fetch(url)
-        .then(res => res.json())
+    clickPokeName = (whichOne) => {
+        whichOne = whichOne.toLowerCase();
+        APIManager.getOneDetails(whichOne)
         .then(data => {
+            
             //get data out of key
-
             let key = Object.keys(data)[0];
             data[key].fbID = key;
+            console.log("newdata", data[key]);
             this.setState({
                 currentPokemon: data[key],
                 detailShowCritter: true,
                 currentCard: null,
+                currentCards: null,
             }, this.getCards);
         })
         .catch(err => console.log(err));
@@ -268,11 +244,11 @@ class View extends Component {
             }
         }
 
-        if (currentCards.length > 0){
-            showCards = <ShowCards cards={currentCards} 
-                        clickCard={this.clickCard} 
-                        updateMyCards={this.updateMyCards} 
-                        myCards={myCards} 
+        if (currentCards && currentCards.length > 0){
+            showCards = <ShowCards cards={currentCards}
+                        clickCard={this.clickCard}
+                        updateMyCards={this.updateMyCards}
+                        myCards={myCards}
                         addCard={this.addCard}
                         currentPokemon={currentPokemon} />
         }

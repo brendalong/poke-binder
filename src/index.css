@@ -41,6 +41,8 @@ a.nav-link.disabled{
   /* bottom: 0; */
   left: 0;
   overflow-y: scroll;
+  padding-right: 0;
+   padding-left: 0;
 }
 
 .poke-cards {

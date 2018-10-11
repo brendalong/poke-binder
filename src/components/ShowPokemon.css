@@ -4,3 +4,31 @@
 .poke-box p {
    /* margin-bottom: .25rem; */
 }
+
+.poke-list {
+
+}
+
+.btn-link {
+   font-weight: 400;
+   color: #ffffff;
+   background-color: transparent;
+   width: 100%;
+   border-radius: 0;
+}
+.btn-link:hover {
+    color: #a1f2f5;
+    text-decoration: underline;
+}
+
+.btn-link.disabled, .btn-link:disabled {
+   background-color: #ffffff;
+    color: #0074d9;
+
+}
+
+.activePokemon {
+  background-color: #ffffff;
+  color: #0074d9;
+  pointer-events: none;
+}

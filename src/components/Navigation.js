@@ -5,6 +5,10 @@ import {
     NavLink,
     NavItem } from 'reactstrap';
 
+//could also add to nav-link style
+const navCursor = {
+   cursor: "pointer",
+};
 
 class Navigation extends Component {
     constructor(props){
@@ -21,13 +25,13 @@ class Navigation extends Component {
                 <h1 className="brand">Poke Binder</h1>
                 <Nav>
                     <NavItem>
-                    <NavLink onClick={this.props.changeView} id="regions" disabled={cv==="regions"} >Regions</NavLink>
+                       <NavLink style={navCursor} onClick={this.props.changeView} id="regions" disabled={cv==="regions"} >Regions</NavLink>
                     </NavItem>
                     <NavItem>
-                    <NavLink onClick={this.props.changeView} id="a-z" disabled={cv==="a-z"}>A-Z</NavLink>
+                       <NavLink style={navCursor} onClick={this.props.changeView} id="a-z" disabled={cv==="a-z"}>A-Z</NavLink>
                     </NavItem>
                     <NavItem>
-                    <NavLink onClick={this.props.changeView} id="mine" disabled>Mine</NavLink>
+                       <NavLink style={navCursor} onClick={this.props.changeView} id="mine" disabled>Mine</NavLink>
                     </NavItem>
 
                 </Nav>
@@ -36,27 +40,29 @@ class Navigation extends Component {
 
                   {cv==="regions" ? <ul className="nav justify-content-end subnav">
                   <li className="nav-item " >
-                  <NavLink className="nav-link" onClick={this.props.changeRegion} id="Kanto" disabled={cr==="Kanto"} >Kanto</NavLink>
+                    <NavLink style={navCursor} className="nav-link" onClick={this.props.changeRegion} id="Kanto" disabled={cr==="Kanto"} >Kanto</NavLink>
                   </li>
                   <li className="nav-item">
-                  <NavLink onClick={this.props.changeRegion} id="Johto" disabled={cr==="Johto"} >Johto</NavLink>
+                    <NavLink style={navCursor} onClick={this.props.changeRegion} id="Johto" disabled={cr==="Johto"} >Johto</NavLink>
                   </li>
                   <li className="nav-item">
-                  <NavLink onClick={this.props.changeRegion} id="Hoenn" disabled={cr==="Hoenn"} >Hoenn</NavLink>
+                    <NavLink style={navCursor} onClick={this.props.changeRegion} id="Hoenn" disabled={cr==="Hoenn"} >Hoenn</NavLink>
                   </li>
                   <li className="nav-item">
-                  <NavLink onClick={this.props.changeRegion} id="Sinnoh" disabled={cr==="Sinnoh"} >Sinnoh</NavLink>
+                    <NavLink style={navCursor} onClick={this.props.changeRegion} id="Sinnoh" disabled={cr==="Sinnoh"} >Sinnoh</NavLink>
                   </li>
                   <li className="nav-item">
-                  <NavLink onClick={this.props.changeRegion} id="Unova" disabled={cr==="Unova"}>Unova</NavLink>
+                    <NavLink style={navCursor} onClick={this.props.changeRegion} id="Unova" disabled={cr==="Unova"}>Unova</NavLink>
                   </li>
                   <li className="nav-item">
-                  <NavLink onClick={this.props.changeRegion} id="Kalos" disabled={cr==="Kalos"}>Kalos</NavLink>
+                    <NavLink style={navCursor} onClick={this.props.changeRegion} id="Kalos" disabled={cr==="Kalos"}>Kalos</NavLink>
                   </li>
                   <li className="nav-item">
-                  <NavLink onClick={this.props.changeRegion} id="Alola" disabled={cr==="Alola"}>Alola</NavLink>
+                    <NavLink style={navCursor} onClick={this.props.changeRegion} id="Alola" disabled={cr==="Alola"}>Alola</NavLink>
                   </li>
-               </ul> : <ul className="nav justify-content-end subnav"><li><NavLink className="nav-link">.</NavLink> </li></ul>}
+               </ul> :
+               null
+            }
             </div>
         );
     }

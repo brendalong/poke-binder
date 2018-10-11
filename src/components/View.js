@@ -5,7 +5,8 @@ import ShowDetail from './ShowDetail';
 import ShowCards from './ShowCards';
 import ShowCardDetail from './ShowCardDetail';
 import { rebase } from '../constants';
-import APIManager from '../modules/dbcalls'
+import APIManager from '../modules/dbcalls';
+
 
 
 class View extends Component {
@@ -24,6 +25,8 @@ class View extends Component {
         currentNotes:{},
         notesLoaded: false,
         myCards: {},
+        auth: false,
+        user: {}
     };
 
     getPokemon = () => {
@@ -120,6 +123,14 @@ class View extends Component {
             const data = snapshot.val() || {};
             //snapshot - how does it look right now.
         });
+    }
+
+    changeAuth = (event) => {
+        if(event.target.id === "login"){
+            console.log("show login");
+        }else {
+            console.log("time to logout");
+        }
     }
 
     changeView = (event) => {
@@ -228,6 +239,10 @@ class View extends Component {
         .catch(err => console.log(err));
     }
 
+    loginWithGoogle = () => {
+        console.log("login with google called");
+    }
+
     render(){
         const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter, myCards} = this.state;
         let showDetail;
@@ -260,12 +275,16 @@ class View extends Component {
         }
         return (
             <div >
+                
                 <Navigation
                     currentView={currentView}
                     changeView={this.changeView}
                     currentRegion={currentRegion}
                     changeRegion={this.changeRegion}
-                    pokeLoaded={this.pokeLoaded} />
+                    pokeLoaded={this.pokeLoaded} 
+                    auth={this.state.auth} 
+                    changeAuth={this.changeAuth} 
+                    loginWithGoogle={this.loginWithGoogle}/>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-2 poke-list">

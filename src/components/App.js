@@ -12,7 +12,7 @@ class App extends Component {
 
     // getinitialState
     this.state = {
-      login: false,
+      
     };
   }
 
@@ -23,7 +23,6 @@ class App extends Component {
 
     return (
       <div>
-        <Header />
         <View />
         <Footer />
       </div>

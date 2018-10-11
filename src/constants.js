@@ -41,6 +41,8 @@
 import Rebase from 're-base';
 import firebase from 'firebase/app';
 import database from 'firebase/database';
+import auth from 'firebase/auth';
+
 const app = firebase.initializeApp({
     apiKey: "AIzaSyAaawZkDsLoUrs-gZUUzYvqmRLTIbWmlIU",
     authDomain: "poke-binder.firebaseapp.com",
@@ -49,7 +51,8 @@ const app = firebase.initializeApp({
     storageBucket: "poke-binder.appspot.com",
     messagingSenderId: "1024359769872"
 });
-var db = firebase.database(app);
-var rebase = Rebase.createClass(db);
-
-export default rebase;
+const db = firebase.database(app);
+const rebase = Rebase.createClass(db);
+console.log("what is firebase", app)
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+export {rebase, app, googleProvider};

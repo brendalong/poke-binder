@@ -4,7 +4,7 @@ import ShowPokemon from './ShowPokemon';
 import ShowDetail from './ShowDetail';
 import ShowCards from './ShowCards';
 import ShowCardDetail from './ShowCardDetail';
-import rebase from '../constants';
+import {rebase, googleProvider, app} from '../constants';
 import APIManager from '../modules/dbcalls';
 
 
@@ -238,14 +238,33 @@ class View extends Component {
         })
         .catch(err => console.log(err));
     }
+//reference articles
+// https://coderjourney.com/tutorials/how-to-add-authentication-to-react-with-firebase/
+// https://firebase.google.com/docs/auth/web/google-signin
 
     loginWithGoogle = () => {
         console.log("login with google called");
-        console.log("rebase is", rebase);
-       
-        // console.log("google", googleProvider);
-        // rebase.authWithOAuthPopup("google", this.authHandler)
-        // rebase.authWithOAuthPopup(googleProvider, this.authHandler);
+        app.auth().signInWithPopup(googleProvider).then(function(result) {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            // var token = result.credential.accessToken;
+            // The signed-in user info.
+            console.log("what is result user", result.user);
+            var user = result.user;
+            //now have user
+            //need to setstate with user
+            //need to sync user db 
+            // ...
+          }).catch(function(error) {
+              console.log("error", error);
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // ...
+          });
     }
 
    authHandler = (e) => {

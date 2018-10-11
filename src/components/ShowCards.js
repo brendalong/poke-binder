@@ -4,7 +4,8 @@ import RenderCard from './RenderCard';
 
 class ShowCards extends Component {
     state = {
-        cards: []
+        cards: [],
+        currentPokemon: {},
     }
 
     objMap = (key) => {
@@ -19,30 +20,43 @@ class ShowCards extends Component {
         });
     }
 
-    compareMyCards(){
-        Object.keys(this.props.myCards).map((this.objMap))
+    compareMyCards(myCards){
+        Object.keys(myCards).map((this.objMap))
     }
 
     //TODO - fix refresh of cards
     componentDidMount() {
        this.setState({
            cards: this.props.cards,
+           currentPokemon: this.props.currentPokemon,
        })
     }
 
+    // componentDidUpdate(prevProps, prevState){
+    //     console.log("componentDidUpdate", this.props.currentPokemon.slug, prevProps.currentPokemon.slug);
+    //     if (this.props.currentPokemon.slug !== prevProps.currentPokemon.slug) {
+    //         //update state
+    //         this.setState({
+    //             cards: this.props.cards,
+    //         });
+    //       }
+    // }
+
     render(){
-        this.compareMyCards();
+        console.log("render showcards");
+        this.compareMyCards(this.props.myCards);
          return (
             <div>
-               {Object.keys(this.state.cards).map((key) => {
-                    const card = this.state.cards[key];
+               {Object.keys(this.props.cards).map((key) => {
+                    const card = this.props.cards[key];
                     return <RenderCard 
                     key={key} 
                     item={key} 
                     card={card} 
                     addCard={this.props.addCard} 
                     currentPokemon={this.props.currentPokemon.slug}
-                    updateMyCards={this.props.updateMyCards} />
+                    updateMyCards={this.props.updateMyCards} 
+                    clickCard={this.props.clickCard} />
                 })
                 }
             </div>

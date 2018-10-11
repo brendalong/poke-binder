@@ -112,7 +112,6 @@ class View extends Component {
     }
 
     componentDidMount() {
-        //lifecycle hook
         this.getPokemon();
         this.dataHandler();
     }
@@ -127,7 +126,6 @@ class View extends Component {
     }
 
     changeView = (event) => {
-       console.log("event", event);
         this.setState({
          currentView: event.target.id,
          pokeLoaded: false,
@@ -216,16 +214,20 @@ class View extends Component {
       };
 
     clickPokeName = (whichOne) => {
+        console.log("clickPokeName", whichOne);
         whichOne = whichOne.toLowerCase();
         APIManager.getOneDetails(whichOne)
         .then(data => {
+            
             //get data out of key
             let key = Object.keys(data)[0];
             data[key].fbID = key;
+            console.log("newdata", data[key]);
             this.setState({
                 currentPokemon: data[key],
                 detailShowCritter: true,
                 currentCard: null,
+                currentCards: null,
             }, this.getCards);
         })
         .catch(err => console.log(err));
@@ -247,7 +249,7 @@ class View extends Component {
             }
         }
 
-        if (currentCards.length > 0){
+        if (currentCards && currentCards.length > 0){
             showCards = <ShowCards cards={currentCards}
                         clickCard={this.clickCard}
                         updateMyCards={this.updateMyCards}

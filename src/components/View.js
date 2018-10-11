@@ -4,7 +4,7 @@ import ShowPokemon from './ShowPokemon';
 import ShowDetail from './ShowDetail';
 import ShowCards from './ShowCards';
 import ShowCardDetail from './ShowCardDetail';
-import { rebase } from '../constants';
+import rebase from '../constants';
 import APIManager from '../modules/dbcalls';
 
 
@@ -241,6 +241,15 @@ class View extends Component {
 
     loginWithGoogle = () => {
         console.log("login with google called");
+        console.log("rebase is", rebase);
+       
+        // console.log("google", googleProvider);
+        // rebase.authWithOAuthPopup("google", this.authHandler)
+        // rebase.authWithOAuthPopup(googleProvider, this.authHandler);
+    }
+
+   authHandler = (e) => {
+    console.log("authHandler", e);
     }
 
     render(){

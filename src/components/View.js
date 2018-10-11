@@ -31,13 +31,10 @@ class View extends Component {
         let dataTable;
         if (this.state.currentView === "regions"){
             //look in regional
-            // url = `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
             dataTable = `regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
         }else if (this.state.currentView === "a-z"){
-            // url = "https://bell-pokemon.firebaseio.com/allPokemon.json"
             dataTable = "allPokemon.json"
         }else if (this.state.currentView === "mine"){
-        //    url = "https://bell-pokemon.firebaseio.com/mine.json"
            dataTable = "mine.json"
         }
 
@@ -207,14 +204,12 @@ class View extends Component {
       }
 
     updateMyCards = (key, updatedCard) => {
-        console.log("key", key, "updatedCard", updatedCard);
         const myCards = {...this.state.myCards};
         myCards[key] = updatedCard;
         this.setState({ myCards });
       };
 
     clickPokeName = (whichOne) => {
-        console.log("clickPokeName", whichOne);
         whichOne = whichOne.toLowerCase();
         APIManager.getOneDetails(whichOne)
         .then(data => {

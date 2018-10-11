@@ -24,23 +24,12 @@ class ShowCards extends Component {
         Object.keys(myCards).map((this.objMap))
     }
 
-    //TODO - fix refresh of cards
     componentDidMount() {
        this.setState({
            cards: this.props.cards,
            currentPokemon: this.props.currentPokemon,
        })
     }
-
-    // componentDidUpdate(prevProps, prevState){
-    //     console.log("componentDidUpdate", this.props.currentPokemon.slug, prevProps.currentPokemon.slug);
-    //     if (this.props.currentPokemon.slug !== prevProps.currentPokemon.slug) {
-    //         //update state
-    //         this.setState({
-    //             cards: this.props.cards,
-    //         });
-    //       }
-    // }
 
     render(){
         console.log("render showcards");

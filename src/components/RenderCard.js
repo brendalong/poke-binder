@@ -7,7 +7,6 @@ class RenderCard extends Component {
     }
 
     handleChange = (e, key) => {
-        console.log("handle change", e, key);
         //do we add the card or update
         if(this.state.card.oneOfMine !== true){
             const newCard = {
@@ -16,6 +15,7 @@ class RenderCard extends Component {
                 oneOfMine: true,
                 currentPokemon: this.props.currentPokemon,
             }
+            this.setState({card:newCard});
             this.props.addCard(newCard);
         }else{
             if (e.target.name === "status"){
@@ -28,7 +28,6 @@ class RenderCard extends Component {
                 this.props.updateMyCards(this.state.card.mycardid, updatedCard);
             }else{
                //make change to notes - get from state
-               console.log("make change to note")
                const updatedCard = {
                    ...this.state.card,
                    [e.target.name]: e.target.value,

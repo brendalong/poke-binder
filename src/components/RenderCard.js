@@ -20,7 +20,7 @@ class RenderCard extends Component {
             this.props.addCard(newCard);
         }else{
             if (e.target.name === "status"){
-                //go ahead and update 
+                //go ahead and update
                 const updatedCard = {
                 ...this.state.card,
                 [e.target.name]: e.target.value,
@@ -39,7 +39,7 @@ class RenderCard extends Component {
         // dropdown change, keep if statement and addCard
         // textbox change, on changes, setState to value
         // touch Save: make updateCard based on values in state
-            
+
         }
       }
 
@@ -52,11 +52,17 @@ class RenderCard extends Component {
         this.setState({card})
       }
 
+   componentDidUpdate(prevProps, prevState, snapshot){
+      if (prevProps.auth != this.props.auth){
+         this.setState({card: this.props.card})
+      }
+   }
+
 
     render(){
         const card = this.state.card;
         const item = this.props.item;
-    
+
         return (
             <div className="row" mycardid={card.mycardid}>
             <div className="card mb-4 box-shadow bg-light border-info" >

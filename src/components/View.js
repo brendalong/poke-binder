@@ -22,9 +22,9 @@ class View extends Component {
         cardIsLoaded: true,
         cardError: null,
         detailShowCritter: true,
-        currentNotes:{},
-        notesLoaded: false,
-        myCards: {},
+      //   currentNotes:{},
+      //   notesLoaded: false,
+        myCards: [],
         auth: false,
         user: null
     };
@@ -120,6 +120,7 @@ class View extends Component {
 
     dataHandler = () => {
        const myRef = `users/${this.state.user}`;
+       console.log("myRef", myRef);
        this.ref = rebase.syncState(`/${myRef}`, {
             context: this,
             state: 'myCards'
@@ -154,8 +155,6 @@ class View extends Component {
             cardIsLoaded: false,
             cardError: null,
             detailShowCritter: true,
-            currentNotes:{},
-            notesLoaded: false,
         }, this.getPokemon);
     }
 
@@ -171,8 +170,6 @@ class View extends Component {
             cardIsLoaded: false,
             cardError: null,
             detailShowCritter: true,
-            currentNotes:{},
-            notesLoaded: false,
        }, this.getPokemon);
 
     }
@@ -207,8 +204,6 @@ class View extends Component {
         this.setState({
             detailShowCritter: false,
             currentCard: obj,
-            currentNotes: {},
-            notesLoaded: false,
         });
     }
 
@@ -237,7 +232,6 @@ class View extends Component {
             //get data out of key
             let key = Object.keys(data)[0];
             data[key].fbID = key;
-            console.log("newdata", data[key]);
             this.setState({
                 currentPokemon: data[key],
                 detailShowCritter: true,
@@ -260,14 +254,13 @@ class View extends Component {
 
 
     loginWithGoogle = () => {
-        console.log("login with google called");
+      //   console.log("login with google called");
         app.auth().signInWithPopup(googleProvider).then(function(result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
             // var token = result.credential.accessToken;
             // The signed-in user info.
 
             const user = result.user;
-            console.log("what is result user", user);
             return user;
             //now have user
             //need to setstate with user
@@ -287,25 +280,29 @@ class View extends Component {
     }
 
     logout = () => {
-       console.log("calling logout");
         app.auth().signOut().then(function() {
             // Sign-out successful.
             //need to get rid of binding
-            console.log("success loogin out");
           }).catch(function(error) {
             // An error happened.
           }).then(()=>{
              rebase.removeBinding(this.ref);
              this.setState({
+                currentView: "regions",
+                currentRegion: "Kanto",
+                pokeLoaded: false,
+                pokemon: [],
+                currentPokemon: {},
+                currentCards: {},
+                currentCard: null,
+                cardIsLoaded: true,
+                cardError: null,
+                detailShowCritter: true,
+                myCards: [],
                 auth: false,
-                user: null,
-                myCards: {},
-             });
+                user: null
+             }, this.getPokemon);
           });
-    }
-
-   authHandler = (e) => {
-    console.log("authHandler", e);
     }
 
     render(){
@@ -341,8 +338,7 @@ class View extends Component {
             showList = <ShowPokemon pokemon={pokemon} currentView={currentView} clickPokeName={this.clickPokeName} />
         }
         return (
-            <div >
-
+            <div>
                 <Navigation
                     currentView={currentView}
                     changeView={this.changeView}

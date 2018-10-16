@@ -26,7 +26,7 @@ class View extends Component {
         notesLoaded: false,
         myCards: {},
         auth: false,
-        user: {}
+        user: null
     };
 
     getPokemon = () => {
@@ -44,7 +44,7 @@ class View extends Component {
         APIManager.getAll(dataTable)
         .then(
            (result) => {
-                //add fbID 
+                //add fbID
                 let newArray = Object.keys(result).map((key, index) => {
                     result[key].fbid = key;
                     return result[key];
@@ -101,10 +101,10 @@ class View extends Component {
 
     componentWillMount() {
         //this runs right before the <App> is rendered
-            this.ref = rebase.syncState(`/mine`, {
-            context: this,
-            state: 'myCards'
-            });
+            // this.ref = rebase.syncState(`/mine`, {
+            // context: this,
+            // state: 'myCards'
+            // });
         }
 
     componentWillUnmount() {
@@ -112,17 +112,26 @@ class View extends Component {
     }
 
     componentDidMount() {
+
         this.getPokemon();
-        this.dataHandler();
+        if (this.state.user){
+         this.dataHandler();
+        }
     }
 
-    dataHandler(){
-        const userRef = rebase.initializedApp.database().ref('mine');
-        // query the firebase once for the user data
-        userRef.once('value', (snapshot) => {
-            const data = snapshot.val() || {};
-            //snapshot - how does it look right now.
-        });
+    dataHandler = () => {
+       const myRef = `users/${this.state.user}`;
+       this.ref = rebase.syncState(`/${myRef}`, {
+            context: this,
+            state: 'myCards'
+            });
+      //   const userRef = rebase.initializedApp.database().ref(myRef);
+      //   // query the firebase once for the user data
+      //   userRef.once('value', (snapshot) => {
+      //       const data = snapshot.val() || {};
+      //       this.setState({myCards:data});
+      //       //snapshot - how does it look right now.
+      //   });
     }
 
     changeAuth = (event) => {
@@ -224,7 +233,7 @@ class View extends Component {
         whichOne = whichOne.toLowerCase();
         APIManager.getOneDetails(whichOne)
         .then(data => {
-            
+
             //get data out of key
             let key = Object.keys(data)[0];
             data[key].fbID = key;
@@ -242,11 +251,11 @@ class View extends Component {
 // https://coderjourney.com/tutorials/how-to-add-authentication-to-react-with-firebase/
 // https://firebase.google.com/docs/auth/web/google-signin
 
-    updateUser=(user)=>{
+     updateUser = (user) => {
         this.setState({
             auth: true,
             user: user.uid,
-        })
+        }, this.dataHandler)
     }
 
     loginWithGoogle = () => {
@@ -255,13 +264,13 @@ class View extends Component {
             // This gives you a Google Access Token. You can use it to access the Google API.
             // var token = result.credential.accessToken;
             // The signed-in user info.
-            
+
             const user = result.user;
             console.log("what is result user", user);
-            this.updateUser(user);
+            return user;
             //now have user
             //need to setstate with user
-            //need to sync user db 
+            //need to sync user db
             // ...
           }).catch(function(error) {
               console.log("error", error);
@@ -269,11 +278,11 @@ class View extends Component {
             var errorCode = error.code;
             var errorMessage = error.message;
             // The email of the user's account used.
-            var email = error.email;
+            // var email = error.email;
             // The firebase.auth.AuthCredential type that was used.
             var credential = error.credential;
             // ...
-          });
+          }).then(result=>this.updateUser(result));
     }
 
     logout = () => {
@@ -318,8 +327,8 @@ class View extends Component {
                         updateMyCards={this.updateMyCards}
                         myCards={myCards}
                         addCard={this.addCard}
-                        currentPokemon={currentPokemon} 
-                        auth={auth} 
+                        currentPokemon={currentPokemon}
+                        auth={auth}
                         loginWithGoogle={this.loginWithGoogle}/>
         }
 
@@ -328,15 +337,15 @@ class View extends Component {
         }
         return (
             <div >
-                
+
                 <Navigation
                     currentView={currentView}
                     changeView={this.changeView}
                     currentRegion={currentRegion}
                     changeRegion={this.changeRegion}
-                    pokeLoaded={this.pokeLoaded} 
-                    auth={this.state.auth} 
-                    changeAuth={this.changeAuth} 
+                    pokeLoaded={this.pokeLoaded}
+                    auth={this.state.auth}
+                    changeAuth={this.changeAuth}
                     loginWithGoogle={this.loginWithGoogle}/>
                 <div className="container-fluid">
                     <div className="row">

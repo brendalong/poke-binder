@@ -112,7 +112,6 @@ class View extends Component {
     }
 
     componentDidMount() {
-
         this.getPokemon();
         if (this.state.user){
          this.dataHandler();
@@ -139,6 +138,7 @@ class View extends Component {
             console.log("show login");
         }else {
             console.log("time to logout");
+            this.logout();
         }
     }
 
@@ -258,6 +258,7 @@ class View extends Component {
         }, this.dataHandler)
     }
 
+
     loginWithGoogle = () => {
         console.log("login with google called");
         app.auth().signInWithPopup(googleProvider).then(function(result) {
@@ -286,16 +287,20 @@ class View extends Component {
     }
 
     logout = () => {
+       console.log("calling logout");
         app.auth().signOut().then(function() {
             // Sign-out successful.
             //need to get rid of binding
-            // rebase.removeBinding(this.ref);
-            this.setState({
-                auth: false,
-                user: null,
-            })
+            console.log("success loogin out");
           }).catch(function(error) {
             // An error happened.
+          }).then(()=>{
+             rebase.removeBinding(this.ref);
+             this.setState({
+                auth: false,
+                user: null,
+                myCards: {},
+             });
           });
     }
 
@@ -346,7 +351,7 @@ class View extends Component {
                     pokeLoaded={this.pokeLoaded}
                     auth={this.state.auth}
                     changeAuth={this.changeAuth}
-                    loginWithGoogle={this.loginWithGoogle}/>
+                    loginWithGoogle={this.loginWithGoogle} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-2 poke-list">

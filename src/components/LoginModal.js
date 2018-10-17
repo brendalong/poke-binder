@@ -18,7 +18,7 @@ class LoginModal extends React.Component {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Login to save your own Poke Binder</ModalHeader>
@@ -32,7 +32,7 @@ class LoginModal extends React.Component {
            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
-      </div>
+      </React.Fragment>
     );
   }
 }

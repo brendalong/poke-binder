@@ -19,6 +19,7 @@ class View extends Component {
         currentPokemon: {},
         currentCards: {},
         currentCard: null,
+        currentLetter: null,
         cardIsLoaded: true,
         cardError: null,
         detailShowCritter: true,
@@ -36,7 +37,9 @@ class View extends Component {
             //look in regional
             dataTable = `regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
         }else if (this.state.currentView === "a-z"){
-            dataTable = "allPokemon.json"
+
+           dataTable = `allPokemon.json?orderBy="slug"&startAt="${this.state.currentLetter}"&endAt="${this.state.currentLetter}\uf8ff"`;
+
         }else if (this.state.currentView === "mine"){
            dataTable = "mine.json"
         }
@@ -129,6 +132,11 @@ class View extends Component {
     }
 
     changeView = (event) => {
+       let loadLetter = null;
+       if (event.target.id === "a-z"){
+         loadLetter = "a";
+       }
+
         this.setState({
          currentView: event.target.id,
          pokeLoaded: false,
@@ -137,6 +145,7 @@ class View extends Component {
             currentPokemon: {},
             currentCards: {},
             currentCard: null,
+           currentLetter: loadLetter,
             cardIsLoaded: false,
             cardError: null,
             detailShowCritter: true,
@@ -145,18 +154,23 @@ class View extends Component {
 
     changeRegion = (event) => {
        this.setState( {
-          currentRegion: event.target.id,
-          pokeLoaded: false,
-          pokemon: {},
-          error: null,
-            currentPokemon: {},
-            currentCards: {},
-            currentCard: null,
-            cardIsLoaded: false,
-            cardError: null,
-            detailShowCritter: true,
+         currentRegion: event.target.id,
+         pokeLoaded: false,
+         pokemon: {},
+         error: null,
+         currentPokemon: {},
+         currentCards: {},
+         currentCard: null,
+         currentLetter: null,
+         cardIsLoaded: false,
+         cardError: null,
+         detailShowCritter: true,
        }, this.getPokemon);
 
+    }
+
+    changeLetter=(event) => {
+       this.setState({currentLetter: event.target.id.toLowerCase()}, this.getPokemon)
     }
 
     makeSearchObj(){
@@ -279,6 +293,7 @@ class View extends Component {
              this.setState({
                 currentView: "regions",
                 currentRegion: "Kanto",
+                currentLetter: "A",
                 pokeLoaded: false,
                 pokemon: [],
                 currentPokemon: {},
@@ -295,7 +310,7 @@ class View extends Component {
     }
 
     render(){
-        const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter, myCards, auth} = this.state;
+        const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter, myCards, auth, currentLetter} = this.state;
         let showDetail;
         let showCards;
         let showList;
@@ -333,11 +348,13 @@ class View extends Component {
                     changeView={this.changeView}
                     currentRegion={currentRegion}
                     changeRegion={this.changeRegion}
+                    currentLetter={currentLetter}
                     pokeLoaded={this.pokeLoaded}
                     auth={this.state.auth}
                     changeAuth={this.changeAuth}
                     loginWithGoogle={this.loginWithGoogle}
-                    loginWithEmail={this.loginEmailPassword} />
+                    loginWithEmail={this.loginEmailPassword}
+                    changeLetter={this.changeLetter}/>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-2 poke-list">

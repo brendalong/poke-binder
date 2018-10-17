@@ -23,17 +23,29 @@ body, html {
 }
 
 .activePokemon {
-  background-color: #ffffff;
+  background-color: rgba(250, 250, 250, 0.80);
 }
 
 .nav-link{
    color: #e7f7ff;
+   margin-left: .5em;
+}
+
+.letters {
+   padding: .5rem .50rem;
+   margin-left: 0em;
+}
+.nav-header{
+   color: #e7f7ff;
+   display: block;
+   padding: .5rem 1rem;
 }
 .pointer {
    text-align: center;
    width: 100%;
-   margin-top: 0;
-    margin-bottom: 0;
+   margin-bottom: 0;
+   margin-top: -.5em;
+   margin-left: .5em;
 }
 
 a.nav-link.disabled {
@@ -46,14 +58,15 @@ a.nav-link.disabled{
   cursor: none;
   background-color: rgba(240, 240, 240, 0.15);
 }
+.nav-link:hover {
+    background-color: rgba(240, 240, 240, 0.05);
+}
 
 .poke-list {
   background-color: #0074d9;
   text-align: center;
   height:82vh;
   position: relative;
-  /* top: 0px; */
-  /* bottom: 0; */
   left: 0;
   overflow-y: scroll;
   padding-right: 0;
@@ -71,6 +84,7 @@ a.nav-link.disabled{
   overflow-y: scroll;
 }
 
+
 .poke-details {
   background-color: #7fdbff;
   text-align: center;
@@ -85,4 +99,8 @@ a.nav-link.disabled{
 .poke-details .card{
   background-color: #7fdbff;
   border: 0px solid rgba(0,0,0,.125);
+}
+
+#login {
+   padding: 0rem;
 }

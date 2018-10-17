@@ -1,5 +1,5 @@
 .poke-box {
-   /* background-color: blueviolet; */
+
 }
 .poke-box p {
    /* margin-bottom: .25rem; */
@@ -22,13 +22,14 @@
 }
 
 .btn-link.disabled, .btn-link:disabled {
-   background-color: #ffffff;
-    color: #0074d9;
+   background-color: rgba(250, 250, 250, 0.90);
+   color: #0074d9;
 
 }
 
 .activePokemon {
   background-color: #ffffff;
+  background-color: rgba(250, 250, 250, 0.90);
   color: #0074d9;
   pointer-events: none;
 }

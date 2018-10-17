@@ -35,7 +35,7 @@ class ShowCards extends Component {
       let newCardArray = this.compareMyCards(this.props.myCards) || this.props.cards;
 
          return (
-            <div>
+            <React.Fragment>
                {Object.keys(newCardArray).map((key) => {
                   const card = newCardArray[key];
                     return <RenderCard
@@ -50,7 +50,7 @@ class ShowCards extends Component {
                     loginWithGoogle={this.props.loginWithGoogle}/>
                 })
                 }
-            </div>
+            </React.Fragment>
          );
       }
 }

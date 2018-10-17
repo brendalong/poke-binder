@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import LoginModal from './LoginModal';
-
+import {Card, CardImg, CardText, CardBody,
+   CardTitle, CardSubtitle} from 'reactstrap';
 
 class RenderCard extends Component {
     state = {
         card: {},
+        savenow: false,
     }
 
     handleChange = (e, key) => {
@@ -33,7 +35,8 @@ class RenderCard extends Component {
                    ...this.state.card,
                    [e.target.name]: e.target.value,
                }
-               this.setState({card: updatedCard});
+
+               this.setState({card: updatedCard, savenow:true});
             }
         // flow
         // dropdown change, keep if statement and addCard
@@ -45,6 +48,7 @@ class RenderCard extends Component {
 
       saveNote = () => {
         this.props.updateMyCards(this.state.card.mycardid, this.state.card);
+        this.setState({savenow: false});
       }
 
       componentDidMount(){
@@ -64,27 +68,27 @@ class RenderCard extends Component {
         const item = this.props.item;
 
         return (
-            <div className="row" mycardid={card.mycardid}>
-            <div className="card mb-4 box-shadow bg-light border-info" >
-                <img className='card-img-top' src={this.state.card.imageUrl} alt={this.state.card.name} onClick={(e) => {this.props.clickCard(card)}}/>
+
+            <Card className="mb-4 box-shadow bg-light border-info" mycardid={card.mycardid}>
+               <CardImg top width="55%" src={this.state.card.imageUrl} alt={this.state.card.name} onClick={(e) => {this.props.clickCard(card)}}/>
                 {this.props.auth ?
-                <div className="card-body">
-                    <select type="text" name="status" value={this.state.card.status || "wild"} placeholder="Card Status" onChange={(e) => this.handleChange(e, item)}>
-                        <option value="caught">Caught!</option>
+                <CardBody>
+                    <select style={{ width: '100%' }} type="text" name="status" value={this.state.card.status || "wild"} placeholder="Card Status" onChange={(e) => this.handleChange(e, item)}>
+                        <option value="caught">Caught</option>
                         <option value="want">Want</option>
                         <option value="wild">Wild</option>
                     </select>
 
                     {this.state.card.oneOfMine ?
                     <div>
-                    <textarea rows='1' type="text"  value={this.state.card.notes || ""} name="notes" placeholder='notes' onChange={(e) => this.handleChange(e, item)}/>
-                    <button id="save" onClick={this.saveNote}>Save</button>
+                          <textarea style={{ width:'100%' }} rows='2' type="text"  value={this.state.card.notes || ""} name="notes" placeholder='notes' onChange={(e) => this.handleChange(e, item)}/>
+                          <button style={{ width: '100%' }} id="save" onClick={this.saveNote} disabled={this.state.savenow ? false : true}>Save Note</button>
                     </div>
                     : <div></div>}
-                </div>
-                :<div><LoginModal buttonLabel="Login" loginWithGoogle={this.props.loginWithGoogle} /> to save cards to your binder</div>}
-            </div>
-            </div>
+                 </CardBody>
+                 : <div><LoginModal style={{ width: '100%' }} buttonLabel="Login" loginWithGoogle={this.props.loginWithGoogle} /> to save cards to your binder</div>}
+            </Card>
+
         )
     }
 }

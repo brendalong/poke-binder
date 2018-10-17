@@ -12,7 +12,7 @@ const navCursor = {
 };
 
 class Navigation extends Component {
-   
+
     render () {
         let cv = this.props.currentView;
         let cr = this.props.currentRegion;
@@ -20,11 +20,12 @@ class Navigation extends Component {
             <div>
             <Navbar >
                 <h1 className="brand">Poke Binder</h1>
-               
+
                 <Nav>
-                
+
                     <NavItem>
-                       <NavLink style={navCursor} onClick={this.props.changeView} id="regions" disabled={cv==="regions"} >Regions</NavLink>
+                       <NavLink style={navCursor} onClick={this.props.changeView} id="regions" disabled={cv === "regions"} >Regions</NavLink>
+                       <p className="pointer">&#x25BD;</p>
                     </NavItem>
                     <NavItem>
                        <NavLink style={navCursor} onClick={this.props.changeView} id="a-z" disabled={cv==="a-z"}>A-Z</NavLink>
@@ -35,13 +36,14 @@ class Navigation extends Component {
                     <NavItem>
                     {(this.props.auth) ? <NavLink style={navCursor} onClick={this.props.changeAuth} id="logout">Logout</NavLink>
                                         :<NavLink id="login"><LoginModal buttonLabel="Login" loginWithGoogle={this.props.loginWithGoogle} /> </NavLink>}
-                    </NavItem>                 
+                    </NavItem>
                 </Nav>
-               
+
                 {/* show the regions when needed */}
                 </Navbar>
 
                   {cv==="regions" ? <ul className="nav justify-content-end subnav">
+                  <li className="nav-link">Regions:</li>
                   <li className="nav-item " >
                     <NavLink style={navCursor} className="nav-link" onClick={this.props.changeRegion} id="Kanto" disabled={cr==="Kanto"} >Kanto</NavLink>
                   </li>

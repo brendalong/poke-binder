@@ -6,6 +6,7 @@ body, html {
 
 .navbar {
   background-color:#001f3f;
+  padding: .5rem 1rem 0 1rem;
 }
 
 .brand {
@@ -13,15 +14,26 @@ body, html {
 }
 
 .nav-item {
-  color: #D11F76;
+  color: #39cccc;
 }
 
 .subnav {
   background-color: #39cccc;
+  background-color: #1c3d5e;
 }
 
 .activePokemon {
   background-color: #ffffff;
+}
+
+.nav-link{
+   color: #e7f7ff;
+}
+.pointer {
+   text-align: center;
+   width: 100%;
+   margin-top: 0;
+    margin-bottom: 0;
 }
 
 a.nav-link.disabled {
@@ -30,6 +42,9 @@ a.nav-link.disabled {
 
 a.nav-link.disabled{
   color: #b10dc9;
+  color: #39cccc;
+  cursor: none;
+  background-color: rgba(240, 240, 240, 0.15);
 }
 
 .poke-list {

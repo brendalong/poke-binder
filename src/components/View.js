@@ -4,7 +4,7 @@ import ShowPokemon from './ShowPokemon';
 import ShowDetail from './ShowDetail';
 import ShowCards from './ShowCards';
 import ShowCardDetail from './ShowCardDetail';
-import {rebase, googleProvider, app} from '../constants';
+import { rebase, googleProvider, emailProvider, app} from '../constants';
 import APIManager from '../modules/dbcalls';
 
 
@@ -52,12 +52,15 @@ class View extends Component {
                 //alphabetize
                 let regionsProp = "pName";
                 let azProp = "name";
+                let mineProp = "mine";
                 let propVal;
 
                 if (this.state.currentView === "regions"){
                     propVal = regionsProp;
                 }else if (this.state.currentView === "a-z"){
                     propVal = azProp;
+                }else if (this.state.currentView === "mine"){
+                   propVal = mineProp
                 }
                 //TODO Add one for mine
                 newArray.sort(function(a, b) {
@@ -65,19 +68,6 @@ class View extends Component {
                     let textB = b[propVal];
                     return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
                 });
-
-               //  }else if (this.state.currentView === "mine") {
-               //    console.log("in the MINE", );
-               //    newArray = Object.keys(result).map((key, index) => {
-               //       result[key].fbid = key;
-               //       return result[key];
-               //    });
-               //    newArray.sort(function (a, b) {
-               //       var textA = a.name;
-               //       var textB = b.name;
-               //       return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-               //    });
-               // }
 
                 return newArray;
            },
@@ -99,32 +89,27 @@ class View extends Component {
         });
     }
 
-    componentWillMount() {
-        //this runs right before the <App> is rendered
-            // this.ref = rebase.syncState(`/mine`, {
-            // context: this,
-            // state: 'myCards'
-            // });
-        }
+   componentWillMount() {
+   }
 
-    componentWillUnmount() {
-        rebase.removeBinding(this.ref);
-    }
+   componentWillUnmount() {
+      rebase.removeBinding(this.ref);
+   }
 
-    componentDidMount() {
-        this.getPokemon();
-        if (this.state.user){
+   componentDidMount() {
+      this.getPokemon();
+      if (this.state.user){
          this.dataHandler();
-        }
-    }
+      }
+   }
 
     dataHandler = () => {
        const myRef = `users/${this.state.user}`;
-       console.log("myRef", myRef);
-       this.ref = rebase.syncState(`/${myRef}`, {
-            context: this,
-            state: 'myCards'
-            });
+      //  console.log("myRef", myRef);
+      this.ref = rebase.syncState(`/${myRef}`, {
+         context: this,
+         state: 'myCards'
+      });
       //   const userRef = rebase.initializedApp.database().ref(myRef);
       //   // query the firebase once for the user data
       //   userRef.once('value', (snapshot) => {
@@ -279,6 +264,10 @@ class View extends Component {
           }).then(result=>this.updateUser(result));
     }
 
+    loginEmailPassword = () => {
+
+    }
+
     logout = () => {
         app.auth().signOut().then(function() {
             // Sign-out successful.
@@ -347,7 +336,8 @@ class View extends Component {
                     pokeLoaded={this.pokeLoaded}
                     auth={this.state.auth}
                     changeAuth={this.changeAuth}
-                    loginWithGoogle={this.loginWithGoogle} />
+                    loginWithGoogle={this.loginWithGoogle}
+                    loginWithEmail={this.loginEmailPassword} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-2 poke-list">

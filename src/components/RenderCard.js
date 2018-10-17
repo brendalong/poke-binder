@@ -53,7 +53,7 @@ class RenderCard extends Component {
       }
 
    componentDidUpdate(prevProps, prevState, snapshot){
-      if (prevProps.auth != this.props.auth){
+      if (prevProps.auth !== this.props.auth){
          this.setState({card: this.props.card})
       }
    }

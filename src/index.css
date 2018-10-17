@@ -87,12 +87,8 @@ a.nav-link.disabled{
 
 .poke-details {
   background-color: #7fdbff;
-  text-align: center;
   height:82vh;
   position: relative;
-  /* top: 0px;
-  bottom: 0;
-  left: 0; */
   overflow-y: scroll;
 }
 
@@ -102,5 +98,32 @@ a.nav-link.disabled{
 }
 
 #login {
-   padding: 0rem;
+   /*padding: 0rem;*/
+}
+
+.btn-info {
+   background-color: #D11F76;
+   border-color: #D11F76;
+}
+
+.btn-info:hover {
+   background-color: rgb(156, 22, 87);
+   border-color: rgb(156, 22, 87);
+}
+.card-info{
+   color: #4a4a4a;
+   font-size: .8em;
+   margin-bottom: .5em;
+}
+.card-detail {
+   margin-bottom: .5em;
+}
+.card-title {
+   text-align: center;
+}
+.card-subtitle {
+   margin-top: 0;
+}
+.main-area-details {
+   padding-bottom: .25rem;
 }

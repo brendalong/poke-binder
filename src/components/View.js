@@ -4,7 +4,7 @@ import ShowPokemon from './ShowPokemon';
 import ShowDetail from './ShowDetail';
 import ShowCards from './ShowCards';
 import ShowCardDetail from './ShowCardDetail';
-import { rebase, googleProvider, emailProvider, app} from '../constants';
+import { rebase, googleProvider, app} from '../constants';
 import APIManager from '../modules/dbcalls';
 
 
@@ -41,21 +41,29 @@ class View extends Component {
            dataTable = `allPokemon.json?orderBy="slug"&startAt="${this.state.currentLetter}"&endAt="${this.state.currentLetter}\uf8ff"`;
 
         }else if (this.state.currentView === "mine"){
-           dataTable = "mine.json"
+         //   https://poke-binder.firebaseio.com/users/RCFSobnacaO6hV6rd0PT0XQNjSI2.json
+           dataTable = `users/${this.state.user}.json`
         }
 
         APIManager.getAll(dataTable)
         .then(
            (result) => {
+              console.log("result", result);
                 //add fbID
-                let newArray = Object.keys(result).map((key, index) => {
-                    result[key].fbid = key;
-                    return result[key];
-                });
+              if (this.state.currentView === "mine"){
+                 let newArray = result[0];
+              }
+               //  let newArray = [...result];
+                if (this.state.currentView !== "mine"){
+                  let newArray = Object.keys(result).map((key, index) => {
+                     result[key].fbid = key;
+                     return result[key];
+                  });
+               }
                 //alphabetize
                 let regionsProp = "pName";
                 let azProp = "name";
-                let mineProp = "mine";
+                let mineProp = "name";
                 let propVal;
 
                 if (this.state.currentView === "regions"){
@@ -71,7 +79,7 @@ class View extends Component {
                     let textB = b[propVal];
                     return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
                 });
-
+console.log("what is newArray", newArray);
                 return newArray;
            },
            // Note: it's important to handle errors here
@@ -142,13 +150,13 @@ class View extends Component {
          pokeLoaded: false,
          pokemon: {},
          error: null,
-            currentPokemon: {},
-            currentCards: {},
-            currentCard: null,
-           currentLetter: loadLetter,
-            cardIsLoaded: false,
-            cardError: null,
-            detailShowCritter: true,
+         currentPokemon: {},
+         currentCards: {},
+         currentCard: null,
+         currentLetter: loadLetter,
+         cardIsLoaded: false,
+         cardError: null,
+         detailShowCritter: true,
         }, this.getPokemon);
     }
 
@@ -273,7 +281,7 @@ class View extends Component {
             // The email of the user's account used.
             // var email = error.email;
             // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
+            // var credential = error.credential;
             // ...
           }).then(result=>this.updateUser(result));
     }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LoginModal from './LoginModal';
-import {Card, CardImg, CardText, CardBody,
-   CardTitle, CardSubtitle} from 'reactstrap';
+import {Card, CardImg, CardBody} from 'reactstrap';
 
 class RenderCard extends Component {
     state = {
@@ -86,7 +85,7 @@ class RenderCard extends Component {
                     </div>
                     : <div></div>}
                  </CardBody>
-                 : <div><LoginModal style={{ width: '100%' }} buttonLabel="Login" loginWithGoogle={this.props.loginWithGoogle} /> to save cards to your binder</div>}
+                 : <div className="card-detail"><p className="card-info">Save card to your binder:</p><LoginModal style={{ width: '100%' }} buttonLabel="Login" loginWithGoogle={this.props.loginWithGoogle} /></div>}
             </Card>
 
         )

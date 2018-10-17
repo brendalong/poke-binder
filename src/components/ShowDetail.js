@@ -5,16 +5,16 @@ import {splitTypeArray} from '../helpers';
 
 function ShowDetail(props){
     return (
-       <div>
-       <Card>
-          <CardImg src={props.currentPokemon.FullImageURL} alt={props.currentPokemon.name}/>
-          <CardBody>
+       <React.Fragment>
+          <Card >
+             <CardBody className="main-area-details">
             <CardTitle>#{props.currentPokemon.id} {props.currentPokemon.name}</CardTitle>
-            <CardSubtitle>Native Region: {props.currentPokemon.region}</CardSubtitle>
-            <CardBody><strong>Type:</strong> {splitTypeArray(props.currentPokemon.type)}</CardBody>
+                <CardSubtitle><strong>Native Region:</strong> {props.currentPokemon.region}</CardSubtitle>
+                <CardSubtitle><strong>Type:</strong> {splitTypeArray(props.currentPokemon.type)}</CardSubtitle>
             </CardBody>
+             <CardImg src={props.currentPokemon.FullImageURL} alt={props.currentPokemon.name} />
           </Card>
-       </div>
+       </React.Fragment>
     );
 }
 

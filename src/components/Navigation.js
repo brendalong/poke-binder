@@ -26,7 +26,6 @@ class Navigation extends Component {
       let cr = this.props.currentRegion;
       let cl = this.props.currentLetter;
       let arrow = `9661;`
-      console.log("cl is", cl);
       const alphabetNav = alphabetArray.map((item, index) => {
          let lowercase = item.toLowerCase();
          return <React.Fragment key={index}>
@@ -50,23 +49,23 @@ class Navigation extends Component {
 
                     <NavItem>
                        <NavLink className="btn" style={navCursor} onClick={this.props.changeView} id="regions" disabled={cv === "regions"} >Regions</NavLink>
-                       <p className="pointer">{(cv === "regions") ? String.fromCharCode(parseInt(arrow)) : null}</p>
+                       <p className="pointer">{(cv === "regions") ? String.fromCharCode(parseInt(arrow,0)) : null}</p>
                     </NavItem>
                     <NavItem>
                        <NavLink className="btn" style={navCursor} onClick={this.props.changeView} id="a-z" disabled={cv==="a-z"}>A-Z</NavLink>
-                       <p className="pointer">{(cv === "a-z") ? String.fromCharCode(parseInt(arrow)) : null}</p>
+                       <p className="pointer">{(cv === "a-z") ? String.fromCharCode(parseInt(arrow,0)) : null}</p>
                     </NavItem>
                     <NavItem>
                        {(this.props.auth) ?
                            <React.Fragment>
                            <NavLink className="btn" style={navCursor} onClick={this.props.changeView} id="mine" disabled={cv === "mine"}>Mine</NavLink>
-                          <p className="pointer">{(cv === "mine") ? String.fromCharCode(parseInt(arrow)) : null}</p>
+                          <p className="pointer">{(cv === "mine") ? String.fromCharCode(parseInt(arrow,0)) : null}</p>
                           </React.Fragment>
                           : null }
                     </NavItem>
                     <NavItem>
                     {(this.props.auth) ? <NavLink style={navCursor} onClick={this.props.changeAuth} id="logout">Logout</NavLink>
-                                        :<NavLink id="login"><LoginModal buttonLabel="Login" loginWithGoogle={this.props.loginWithGoogle} /></NavLink>}
+                          : <NavLink id="login" style={{ padding: '0' }} ><LoginModal buttonLabel="Login" loginWithGoogle={this.props.loginWithGoogle}/></NavLink>}
                     </NavItem>
                 </Nav>
 

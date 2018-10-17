@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 
 class LoginModal extends React.Component {
   state = {
@@ -19,17 +19,16 @@ class LoginModal extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button>
+        <Button color="info" onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Login to save your own Poke Binder</ModalHeader>
-          <ModalBody>
-            <Button color="primary" id="login" onClick={this.toggle}>Login With Google</Button>{' '}
-          </ModalBody>
-          <ModalBody>Login with User Name and Password
+          <ModalHeader toggle={this.toggle}>Save your own Poke Binder</ModalHeader>
+
+         {/* <ModalBody>Login with User Name and Password
           <Button color="primary" id="loginEmail" onClick={this.toggle}>Login With Email</Button>{' '}
-          </ModalBody>
+         </ModalBody> */}
           <ModalFooter>
-           <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                <Button color="info" id="login" onClick={this.toggle}>Login With Google</Button>{' '}
+                <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </React.Fragment>

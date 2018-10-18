@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import Header from './Header';
 import View from './View';
 import Footer from './Footer';
 
@@ -12,7 +11,7 @@ class App extends Component {
 
     // getinitialState
     this.state = {
-      login: false,
+      
     };
   }
 
@@ -23,7 +22,6 @@ class App extends Component {
 
     return (
       <div>
-        <Header />
         <View />
         <Footer />
       </div>

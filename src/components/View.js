@@ -4,8 +4,9 @@ import ShowPokemon from './ShowPokemon';
 import ShowDetail from './ShowDetail';
 import ShowCards from './ShowCards';
 import ShowCardDetail from './ShowCardDetail';
-import { rebase } from '../constants';
-import APIManager from '../modules/dbcalls'
+import { rebase, googleProvider, app} from '../constants';
+import APIManager from '../modules/dbcalls';
+
 
 
 class View extends Component {
@@ -18,12 +19,15 @@ class View extends Component {
         currentPokemon: {},
         currentCards: {},
         currentCard: null,
+        currentLetter: null,
         cardIsLoaded: true,
         cardError: null,
         detailShowCritter: true,
-        currentNotes:{},
-        notesLoaded: false,
-        myCards: {},
+      //   currentNotes:{},
+      //   notesLoaded: false,
+        myCards: [],
+        auth: false,
+        user: null
     };
 
     getPokemon = () => {
@@ -33,28 +37,38 @@ class View extends Component {
             //look in regional
             dataTable = `regional.json?orderBy="regionName"&equalTo="${this.state.currentRegion}"`
         }else if (this.state.currentView === "a-z"){
-            dataTable = "allPokemon.json"
-        }else if (this.state.currentView === "mine"){
-           dataTable = "mine.json"
-        }
 
+           dataTable = `allPokemon.json?orderBy="slug"&startAt="${this.state.currentLetter}"&endAt="${this.state.currentLetter}\uf8ff"`;
+
+        }else if (this.state.currentView === "mine"){
+         //   https://poke-binder.firebaseio.com/users/RCFSobnacaO6hV6rd0PT0XQNjSI2.json
+           dataTable = `users/${this.state.user}.json`
+        }
+        if(this.state.currentView !== "mine"){
         APIManager.getAll(dataTable)
         .then(
            (result) => {
-                //add fbID 
-                let newArray = Object.keys(result).map((key, index) => {
-                    result[key].fbid = key;
-                    return result[key];
-                });
+
+                //add fbID
+
+
+                  let newArray = Object.keys(result).map((key, index) => {
+                     result[key].fbid = key;
+                     return result[key];
+                  });
+
                 //alphabetize
                 let regionsProp = "pName";
                 let azProp = "name";
+                let mineProp = "mine";
                 let propVal;
 
                 if (this.state.currentView === "regions"){
                     propVal = regionsProp;
                 }else if (this.state.currentView === "a-z"){
                     propVal = azProp;
+                }else if (this.state.currentView === "mine"){
+                   propVal = mineProp
                 }
                 //TODO Add one for mine
                 newArray.sort(function(a, b) {
@@ -62,19 +76,6 @@ class View extends Component {
                     let textB = b[propVal];
                     return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
                 });
-
-               //  }else if (this.state.currentView === "mine") {
-               //    console.log("in the MINE", );
-               //    newArray = Object.keys(result).map((key, index) => {
-               //       result[key].fbid = key;
-               //       return result[key];
-               //    });
-               //    newArray.sort(function (a, b) {
-               //       var textA = a.name;
-               //       var textB = b.name;
-               //       return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-               //    });
-               // }
 
                 return newArray;
            },
@@ -94,67 +95,90 @@ class View extends Component {
                 pokemon: result,
                });
         });
+      }else{
+
+      }
     }
 
-    componentWillMount() {
-        //this runs right before the <App> is rendered
-            this.ref = rebase.syncState(`/mine`, {
-            context: this,
-            state: 'myCards'
-            });
+   componentWillMount() {
+   }
+
+   componentWillUnmount() {
+      rebase.removeBinding(this.ref);
+   }
+
+   componentDidMount() {
+      this.getPokemon();
+      if (this.state.user){
+         this.dataHandler();
+      }
+   }
+
+    dataHandler = () => {
+       const myRef = `users/${this.state.user}`;
+      //  console.log("myRef", myRef);
+      this.ref = rebase.syncState(`/${myRef}`, {
+         context: this,
+         state: 'myCards'
+      });
+      //   const userRef = rebase.initializedApp.database().ref(myRef);
+      //   // query the firebase once for the user data
+      //   userRef.once('value', (snapshot) => {
+      //       const data = snapshot.val() || {};
+      //       this.setState({myCards:data});
+      //       //snapshot - how does it look right now.
+      //   });
+    }
+
+    changeAuth = (event) => {
+        if(event.target.id === "login"){
+            console.log("show login");
+        }else {
+            console.log("time to logout");
+            this.logout();
         }
-
-    componentWillUnmount() {
-        rebase.removeBinding(this.ref);
-    }
-
-    componentDidMount() {
-        this.getPokemon();
-        this.dataHandler();
-    }
-
-    dataHandler(){
-        const userRef = rebase.initializedApp.database().ref('mine');
-        // query the firebase once for the user data
-        userRef.once('value', (snapshot) => {
-            const data = snapshot.val() || {};
-            //snapshot - how does it look right now.
-        });
     }
 
     changeView = (event) => {
+       let loadLetter = null;
+       if (event.target.id === "a-z"){
+         loadLetter = "a";
+       }
+
         this.setState({
          currentView: event.target.id,
          pokeLoaded: false,
          pokemon: {},
          error: null,
-            currentPokemon: {},
-            currentCards: {},
-            currentCard: null,
-            cardIsLoaded: false,
-            cardError: null,
-            detailShowCritter: true,
-            currentNotes:{},
-            notesLoaded: false,
+         currentPokemon: {},
+         currentCards: {},
+         currentCard: null,
+         currentLetter: loadLetter,
+         cardIsLoaded: false,
+         cardError: null,
+         detailShowCritter: true,
         }, this.getPokemon);
     }
 
     changeRegion = (event) => {
        this.setState( {
-          currentRegion: event.target.id,
-          pokeLoaded: false,
-          pokemon: {},
-          error: null,
-            currentPokemon: {},
-            currentCards: {},
-            currentCard: null,
-            cardIsLoaded: false,
-            cardError: null,
-            detailShowCritter: true,
-            currentNotes:{},
-            notesLoaded: false,
+         currentRegion: event.target.id,
+         pokeLoaded: false,
+         pokemon: {},
+         error: null,
+         currentPokemon: {},
+         currentCards: {},
+         currentCard: null,
+         currentLetter: null,
+         cardIsLoaded: false,
+         cardError: null,
+         detailShowCritter: true,
        }, this.getPokemon);
 
+    }
+
+    changeLetter=(event) => {
+       this.setState({currentLetter: event.target.id.toLowerCase()}, this.getPokemon)
     }
 
     makeSearchObj(){
@@ -187,8 +211,6 @@ class View extends Component {
         this.setState({
             detailShowCritter: false,
             currentCard: obj,
-            currentNotes: {},
-            notesLoaded: false,
         });
     }
 
@@ -213,11 +235,10 @@ class View extends Component {
         whichOne = whichOne.toLowerCase();
         APIManager.getOneDetails(whichOne)
         .then(data => {
-            
+
             //get data out of key
             let key = Object.keys(data)[0];
             data[key].fbID = key;
-            console.log("newdata", data[key]);
             this.setState({
                 currentPokemon: data[key],
                 detailShowCritter: true,
@@ -227,9 +248,77 @@ class View extends Component {
         })
         .catch(err => console.log(err));
     }
+//reference articles
+// https://coderjourney.com/tutorials/how-to-add-authentication-to-react-with-firebase/
+// https://firebase.google.com/docs/auth/web/google-signin
+
+     updateUser = (user) => {
+        this.setState({
+            auth: true,
+            user: user.uid,
+        }, this.dataHandler)
+    }
+
+
+    loginWithGoogle = () => {
+      //   console.log("login with google called");
+        app.auth().signInWithPopup(googleProvider).then(function(result) {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            // var token = result.credential.accessToken;
+            // The signed-in user info.
+
+            const user = result.user;
+            return user;
+            //now have user
+            //need to setstate with user
+            //need to sync user db
+            // ...
+          }).catch(function(error) {
+              console.log("error", error);
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            // var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            // var credential = error.credential;
+            // ...
+          }).then(result=>this.updateUser(result));
+    }
+
+    loginEmailPassword = () => {
+
+    }
+
+    logout = () => {
+        app.auth().signOut().then(function() {
+            // Sign-out successful.
+            //need to get rid of binding
+          }).catch(function(error) {
+            // An error happened.
+          }).then(()=>{
+             rebase.removeBinding(this.ref);
+             this.setState({
+                currentView: "regions",
+                currentRegion: "Kanto",
+                currentLetter: "A",
+                pokeLoaded: false,
+                pokemon: [],
+                currentPokemon: {},
+                currentCards: {},
+                currentCard: null,
+                cardIsLoaded: true,
+                cardError: null,
+                detailShowCritter: true,
+                myCards: [],
+                auth: false,
+                user: null
+             }, this.getPokemon);
+          });
+    }
 
     render(){
-        const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter, myCards} = this.state;
+        const { currentView, currentRegion, pokemon, pokeLoaded, currentPokemon, currentCards, currentCard, detailShowCritter, myCards, auth, currentLetter} = this.state;
         let showDetail;
         let showCards;
         let showList;
@@ -237,33 +326,45 @@ class View extends Component {
         if (detailShowCritter){
             if (currentPokemon.name){
                 showDetail = <ShowDetail currentPokemon={currentPokemon} />;
+            }else{
+                showDetail =  <div className="instructions"><p>&#8592; Choose a Pokemon</p></div>
             }
         } else {
             if (currentCard){
                 showDetail = <ShowCardDetail img={currentCard} currentPokemon={currentPokemon}/>
             }
         }
+        if(currentView === "mine"){
 
+        }
         if (currentCards && currentCards.length > 0){
             showCards = <ShowCards cards={currentCards}
                         clickCard={this.clickCard}
                         updateMyCards={this.updateMyCards}
                         myCards={myCards}
                         addCard={this.addCard}
-                        currentPokemon={currentPokemon} />
+                        currentPokemon={currentPokemon}
+                        auth={auth}
+                        loginWithGoogle={this.loginWithGoogle}/>
         }
 
         if (pokeLoaded){
             showList = <ShowPokemon pokemon={pokemon} currentView={currentView} clickPokeName={this.clickPokeName} />
         }
         return (
-            <div >
+            <div>
                 <Navigation
                     currentView={currentView}
                     changeView={this.changeView}
                     currentRegion={currentRegion}
                     changeRegion={this.changeRegion}
-                    pokeLoaded={this.pokeLoaded} />
+                    currentLetter={currentLetter}
+                    pokeLoaded={this.pokeLoaded}
+                    auth={this.state.auth}
+                    changeAuth={this.changeAuth}
+                    loginWithGoogle={this.loginWithGoogle}
+                    loginWithEmail={this.loginEmailPassword}
+                    changeLetter={this.changeLetter}/>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-2 poke-list">

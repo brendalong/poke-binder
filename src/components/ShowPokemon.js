@@ -4,9 +4,9 @@ import {firstLetterCase} from '../helpers';
 
 
 class ShowPokemon extends Component {
-   state = {
-            activeElement: null,
-   }
+    state = {
+        activeElement: null,
+    }
 
    componentDidMount() {
       this.setState({

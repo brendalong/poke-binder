@@ -26,3 +26,13 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.instructions {
+  text-align: left;
+  color: #212529;
+  margin-top: 2em;
+}
+
+.card-image {
+  object-fit: contain;
+}

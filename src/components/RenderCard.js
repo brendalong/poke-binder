@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-
+import LoginModal from './LoginModal';
+import {Card, CardImg, CardBody} from 'reactstrap';
 
 class RenderCard extends Component {
     state = {
         card: {},
+        savenow: false,
     }
 
     handleChange = (e, key) => {
@@ -19,7 +21,7 @@ class RenderCard extends Component {
             this.props.addCard(newCard);
         }else{
             if (e.target.name === "status"){
-                //go ahead and update 
+                //go ahead and update
                 const updatedCard = {
                 ...this.state.card,
                 [e.target.name]: e.target.value,
@@ -32,18 +34,20 @@ class RenderCard extends Component {
                    ...this.state.card,
                    [e.target.name]: e.target.value,
                }
-               this.setState({card: updatedCard});
+
+               this.setState({card: updatedCard, savenow:true});
             }
         // flow
         // dropdown change, keep if statement and addCard
         // textbox change, on changes, setState to value
         // touch Save: make updateCard based on values in state
-            
+
         }
       }
 
       saveNote = () => {
         this.props.updateMyCards(this.state.card.mycardid, this.state.card);
+        this.setState({savenow: false});
       }
 
       componentDidMount(){
@@ -51,31 +55,39 @@ class RenderCard extends Component {
         this.setState({card})
       }
 
+   componentDidUpdate(prevProps, prevState, snapshot){
+      if (prevProps.auth !== this.props.auth){
+         this.setState({card: this.props.card})
+      }
+   }
+
 
     render(){
         const card = this.state.card;
         const item = this.props.item;
-    
+
         return (
-            <div className="row" mycardid={card.mycardid}>
-            <div className="card mb-4 box-shadow bg-light border-info" >
-                <img className='card-img-top' src={this.state.card.imageUrl} alt={this.state.card.name} onClick={(e) => {this.props.clickCard(card)}}/>
-                <div className="card-body">
-                    <select type="text" name="status" value={this.state.card.status || "wild"} placeholder="Card Status" onChange={(e) => this.handleChange(e, item)}>
-                        <option value="caught">Caught!</option>
+
+            <Card className="mb-4 box-shadow bg-light border-info" mycardid={card.mycardid}>
+               <CardImg top width="55%" src={this.state.card.imageUrl} alt={this.state.card.name} onClick={(e) => {this.props.clickCard(card)}}/>
+                {this.props.auth ?
+                <CardBody>
+                    <select style={{ width: '100%' }} type="text" name="status" value={this.state.card.status || "wild"} placeholder="Card Status" onChange={(e) => this.handleChange(e, item)}>
+                        <option value="caught">Caught</option>
                         <option value="want">Want</option>
                         <option value="wild">Wild</option>
                     </select>
 
                     {this.state.card.oneOfMine ?
                     <div>
-                    <textarea rows='1' type="text"  value={this.state.card.notes || ""} name="notes" placeholder='notes' onChange={(e) => this.handleChange(e, item)}/>
-                    <button id="save" onClick={this.saveNote}>Save</button>
+                          <textarea style={{ width:'100%' }} rows='2' type="text"  value={this.state.card.notes || ""} name="notes" placeholder='notes' onChange={(e) => this.handleChange(e, item)}/>
+                          <button style={{ width: '100%' }} id="save" onClick={this.saveNote} disabled={this.state.savenow ? false : true}>Save Note</button>
                     </div>
                     : <div></div>}
-                </div>
-            </div>
-            </div>
+                 </CardBody>
+                 : <div className="card-detail"><p className="card-info">Save card to your binder:</p><LoginModal style={{ width: '100%' }} buttonLabel="Login" loginWithGoogle={this.props.loginWithGoogle} /></div>}
+            </Card>
+
         )
     }
 }

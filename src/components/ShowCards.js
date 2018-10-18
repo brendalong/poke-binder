@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import RenderCard from './RenderCard';
 
+// let compareArray;
 
 class ShowCards extends Component {
     state = {
-        cards: [],
-        currentPokemon: {},
+
     }
 
     objMap = (key) => {
          //cycle through mine and this.props.cards and find matches, tag this.props.cards with property of oneOfMine
-        this.props.cards.forEach((element) => {
+        let propsCards = [...this.props.cards];
+         propsCards.forEach((element) => {
             if (this.props.myCards[key].id === element.id){
                 element.oneOfMine = this.props.myCards[key].oneOfMine;
                 element.notes = this.props.myCards[key].notes || null;
@@ -18,37 +19,38 @@ class ShowCards extends Component {
                 element.mycardid = key;
             }
         });
+        return propsCards;
     }
 
     compareMyCards(myCards){
-        Object.keys(myCards).map((this.objMap))
+        let cards = Object.keys(myCards).map((this.objMap));
+        return cards[0];
     }
 
     componentDidMount() {
-       this.setState({
-           cards: this.props.cards,
-           currentPokemon: this.props.currentPokemon,
-       })
+
     }
 
     render(){
-        console.log("render showcards");
-        this.compareMyCards(this.props.myCards);
+      let newCardArray = this.compareMyCards(this.props.myCards) || this.props.cards;
+
          return (
-            <div>
-               {Object.keys(this.props.cards).map((key) => {
-                    const card = this.props.cards[key];
-                    return <RenderCard 
-                    key={key} 
-                    item={key} 
-                    card={card} 
-                    addCard={this.props.addCard} 
+            <React.Fragment>
+               {Object.keys(newCardArray).map((key) => {
+                  const card = newCardArray[key];
+                    return <RenderCard
+                    key={key}
+                    item={key}
+                    card={card}
+                    addCard={this.props.addCard}
                     currentPokemon={this.props.currentPokemon.slug}
-                    updateMyCards={this.props.updateMyCards} 
-                    clickCard={this.props.clickCard} />
+                    updateMyCards={this.props.updateMyCards}
+                    clickCard={this.props.clickCard}
+                    auth={this.props.auth}
+                    loginWithGoogle={this.props.loginWithGoogle}/>
                 })
                 }
-            </div>
+            </React.Fragment>
          );
       }
 }

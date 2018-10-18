@@ -6,6 +6,7 @@ body, html {
 
 .navbar {
   background-color:#001f3f;
+  padding: .5rem 1rem 0 1rem;
 }
 
 .brand {
@@ -13,15 +14,38 @@ body, html {
 }
 
 .nav-item {
-  color: #D11F76;
+  color: #39cccc;
 }
 
 .subnav {
   background-color: #39cccc;
+  background-color: #1c3d5e;
 }
 
 .activePokemon {
-  background-color: #ffffff;
+  background-color: rgba(250, 250, 250, 0.80);
+}
+
+.nav-link{
+   color: #e7f7ff;
+   margin-left: .5em;
+}
+
+.letters {
+   padding: .5rem .50rem;
+   margin-left: 0em;
+}
+.nav-header{
+   color: #e7f7ff;
+   display: block;
+   padding: .5rem 1rem;
+}
+.pointer {
+   text-align: center;
+   width: 100%;
+   margin-bottom: 0;
+   margin-top: -.5em;
+   margin-left: .5em;
 }
 
 a.nav-link.disabled {
@@ -30,6 +54,12 @@ a.nav-link.disabled {
 
 a.nav-link.disabled{
   color: #b10dc9;
+  color: #39cccc;
+  cursor: none;
+  background-color: rgba(240, 240, 240, 0.15);
+}
+.nav-link:hover {
+    background-color: rgba(240, 240, 240, 0.05);
 }
 
 .poke-list {
@@ -37,8 +67,6 @@ a.nav-link.disabled{
   text-align: center;
   height:82vh;
   position: relative;
-  /* top: 0px; */
-  /* bottom: 0; */
   left: 0;
   overflow-y: scroll;
   padding-right: 0;
@@ -56,18 +84,46 @@ a.nav-link.disabled{
   overflow-y: scroll;
 }
 
+
 .poke-details {
   background-color: #7fdbff;
-  text-align: center;
   height:82vh;
   position: relative;
-  /* top: 0px;
-  bottom: 0;
-  left: 0; */
   overflow-y: scroll;
 }
 
 .poke-details .card{
   background-color: #7fdbff;
   border: 0px solid rgba(0,0,0,.125);
+}
+
+#login {
+   /*padding: 0rem;*/
+}
+
+.btn-info {
+   background-color: #D11F76;
+   border-color: #D11F76;
+}
+
+.btn-info:hover {
+   background-color: rgb(156, 22, 87);
+   border-color: rgb(156, 22, 87);
+}
+.card-info{
+   color: #4a4a4a;
+   font-size: .8em;
+   margin-bottom: .5em;
+}
+.card-detail {
+   margin-bottom: .5em;
+}
+.card-title {
+   text-align: center;
+}
+.card-subtitle {
+   margin-top: 0;
+}
+.main-area-details {
+   padding-bottom: .25rem;
 }

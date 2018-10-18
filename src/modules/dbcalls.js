@@ -1,4 +1,4 @@
-const dbRemote = "https://bell-pokemon.firebaseio.com/";
+const dbRemote = "https://poke-binder.firebaseio.com";
 
 export default Object.create(null, {
     getAll: {

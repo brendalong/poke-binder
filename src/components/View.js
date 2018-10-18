@@ -44,26 +44,23 @@ class View extends Component {
          //   https://poke-binder.firebaseio.com/users/RCFSobnacaO6hV6rd0PT0XQNjSI2.json
            dataTable = `users/${this.state.user}.json`
         }
-
+        if(this.state.currentView !== "mine"){
         APIManager.getAll(dataTable)
         .then(
            (result) => {
-              console.log("result", result);
+
                 //add fbID
-              if (this.state.currentView === "mine"){
-                 let newArray = result[0];
-              }
-               //  let newArray = [...result];
-                if (this.state.currentView !== "mine"){
+
+
                   let newArray = Object.keys(result).map((key, index) => {
                      result[key].fbid = key;
                      return result[key];
                   });
-               }
+
                 //alphabetize
                 let regionsProp = "pName";
                 let azProp = "name";
-                let mineProp = "name";
+                let mineProp = "mine";
                 let propVal;
 
                 if (this.state.currentView === "regions"){
@@ -79,7 +76,7 @@ class View extends Component {
                     let textB = b[propVal];
                     return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
                 });
-console.log("what is newArray", newArray);
+
                 return newArray;
            },
            // Note: it's important to handle errors here
@@ -98,6 +95,9 @@ console.log("what is newArray", newArray);
                 pokemon: result,
                });
         });
+      }else{
+
+      }
     }
 
    componentWillMount() {
@@ -327,14 +327,16 @@ console.log("what is newArray", newArray);
             if (currentPokemon.name){
                 showDetail = <ShowDetail currentPokemon={currentPokemon} />;
             }else{
-                showDetail =  <div className="instructions"><p>&#8592; Get started by choosing a Pokemon</p></div>
+                showDetail =  <div className="instructions"><p>&#8592; Choose a Pokemon</p></div>
             }
         } else {
             if (currentCard){
                 showDetail = <ShowCardDetail img={currentCard} currentPokemon={currentPokemon}/>
             }
         }
+        if(currentView === "mine"){
 
+        }
         if (currentCards && currentCards.length > 0){
             showCards = <ShowCards cards={currentCards}
                         clickCard={this.clickCard}

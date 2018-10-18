@@ -10,6 +10,9 @@ import LoginModal from './LoginModal';
 const navCursor = {
    cursor: "pointer",
 };
+const logoutStyle = {
+   color: "#ffffff",
+}
 
 let alphabetArray = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 
@@ -55,16 +58,16 @@ class Navigation extends Component {
                        <NavLink className="btn" style={navCursor} onClick={this.props.changeView} id="a-z" disabled={cv==="a-z"}>A-Z</NavLink>
                        <p className="pointer">{(cv === "a-z") ? String.fromCharCode(parseInt(arrow,0)) : null}</p>
                     </NavItem>
-                    <NavItem>
+                    {/*<NavItem>
                        {(this.props.auth) ?
                            <React.Fragment>
                            <NavLink className="btn" style={navCursor} onClick={this.props.changeView} id="mine" disabled={cv === "mine"}>Mine</NavLink>
                           <p className="pointer">{(cv === "mine") ? String.fromCharCode(parseInt(arrow,0)) : null}</p>
                           </React.Fragment>
                           : null }
-                    </NavItem>
+                       </NavItem>*/}
                     <NavItem>
-                    {(this.props.auth) ? <NavLink style={navCursor} onClick={this.props.changeAuth} id="logout">Logout</NavLink>
+                    {(this.props.auth) ? <NavLink style={logoutStyle} className="btn btn-info" onClick={this.props.changeAuth} id="logout">Logout</NavLink>
                           : <NavLink id="login" style={{ padding: '0' }} ><LoginModal buttonLabel="Login" loginWithGoogle={this.props.loginWithGoogle}/></NavLink>}
                     </NavItem>
                 </Nav>

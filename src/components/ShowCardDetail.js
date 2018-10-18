@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {
     Card, CardImg, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
+import { splitTypeArray } from '../helpers';
+
 
 class ShowCardDetail extends Component {
 
@@ -27,9 +29,10 @@ class ShowCardDetail extends Component {
          <div>
             <Card>
                <CardBody className="main-area-details">
-               <CardTitle>#{this.props.currentPokemon.id} {this.props.currentPokemon.name}</CardTitle>
-                  <CardSubtitle><strong>Native Region:</strong> {props.currentPokemon.region}</CardSubtitle>
+                  <CardTitle>#{this.props.currentPokemon.id} {this.props.currentPokemon.name}</CardTitle>
+                  <CardSubtitle><strong>Native Region:</strong> {this.props.currentPokemon.region}</CardSubtitle>
                   <CardSubtitle><strong>Type:</strong> {splitTypeArray(props.currentPokemon.type)}</CardSubtitle>
+
                </CardBody>
                <CardImg src={this.props.img.imageUrlHiRes} alt={this.props.currentPokemon.name} className="cardDetail"/>
             </Card>

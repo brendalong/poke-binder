@@ -1,7 +1,21 @@
 body, html {
   margin: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
   height:100%;
+}
+
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer {
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1 0 auto;
 }
 
 .navbar {

@@ -11,20 +11,20 @@ class App extends Component {
 
     // getinitialState
     this.state = {
-      
+
     };
   }
 
-  
+
 
 
   render() {
 
     return (
-      <div>
+      <React.Fragment>
         <View />
         <Footer />
-      </div>
+       </React.Fragment>
     );
   }
 }

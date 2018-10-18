@@ -352,7 +352,8 @@ class View extends Component {
             showList = <ShowPokemon pokemon={pokemon} currentView={currentView} clickPokeName={this.clickPokeName} />
         }
         return (
-            <div>
+           <React.Fragment>
+           <div className="content">
                 <Navigation
                     currentView={currentView}
                     changeView={this.changeView}
@@ -378,7 +379,8 @@ class View extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
+              </div>
+              </React.Fragment>
         );
     }
 }

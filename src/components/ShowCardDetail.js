@@ -25,12 +25,13 @@ class ShowCardDetail extends Component {
 
       return (
          <div>
-         <Card >
-            <CardImg src={this.props.img.imageUrlHiRes} alt={this.props.currentPokemon.name} className="cardDetail"/>
-            <CardBody>
-            <CardTitle>#{this.props.currentPokemon.id} {this.props.currentPokemon.name}</CardTitle>
-            <CardSubtitle>Native Region: {this.props.currentPokemon.region}</CardSubtitle>
-            </CardBody>
+            <Card>
+               <CardBody className="main-area-details">
+               <CardTitle>#{this.props.currentPokemon.id} {this.props.currentPokemon.name}</CardTitle>
+                  <CardSubtitle><strong>Native Region:</strong> {props.currentPokemon.region}</CardSubtitle>
+                  <CardSubtitle><strong>Type:</strong> {splitTypeArray(props.currentPokemon.type)}</CardSubtitle>
+               </CardBody>
+               <CardImg src={this.props.img.imageUrlHiRes} alt={this.props.currentPokemon.name} className="cardDetail"/>
             </Card>
          </div>
       );

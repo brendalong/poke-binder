@@ -8,7 +8,6 @@ class LoginModal extends React.Component {
 
   toggle = (event) => {
     if (event.target.id === "login"){
-      console.log("let's login");
       this.props.loginWithGoogle()
     }
     this.setState({

@@ -132,9 +132,8 @@ class View extends Component {
 
     changeAuth = (event) => {
         if(event.target.id === "login"){
-            console.log("show login");
+            // console.log("show login");
         }else {
-            console.log("time to logout");
             this.logout();
         }
     }
